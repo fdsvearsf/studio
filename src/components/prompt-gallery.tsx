@@ -71,7 +71,7 @@ export function PromptGallery() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold tracking-tight">Welcome to the Gallery</h2>
+        <h2 className="text-3xl font-bold tracking-tight">AI Photo Editing</h2>
         <Button variant="outline" size="icon" onClick={fetchData} disabled={isLoading}>
           <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           <span className="sr-only">Refresh</span>
