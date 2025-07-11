@@ -31,33 +31,23 @@ export function useFavorites() {
     }
   };
 
-  const addFavorite = useCallback((prompt: Prompt) => {
-    setFavorites(prevFavorites => {
-      const newFavorites = [...prevFavorites, prompt];
-      updateLocalStorage(newFavorites);
-      return newFavorites;
-    });
-  }, []);
-
-  const removeFavorite = useCallback((promptId: number) => {
-    setFavorites(prevFavorites => {
-      const newFavorites = prevFavorites.filter(p => p.id !== promptId);
-      updateLocalStorage(newFavorites);
-      return newFavorites;
-    });
-  }, []);
-
   const isFavorite = useCallback((promptId: number) => {
     return favorites.some(p => p.id === promptId);
   }, [favorites]);
 
   const toggleFavorite = useCallback((prompt: Prompt) => {
-    if (isFavorite(prompt.id)) {
-      removeFavorite(prompt.id);
-    } else {
-      addFavorite(prompt);
-    }
-  }, [isFavorite, addFavorite, removeFavorite]);
+    setFavorites(currentFavorites => {
+      const isCurrentlyFavorite = currentFavorites.some(p => p.id === prompt.id);
+      let newFavorites;
+      if (isCurrentlyFavorite) {
+        newFavorites = currentFavorites.filter(p => p.id !== prompt.id);
+      } else {
+        newFavorites = [...currentFavorites, prompt];
+      }
+      updateLocalStorage(newFavorites);
+      return newFavorites;
+    });
+  }, []);
 
   return { favorites, isFavorite, toggleFavorite, isLoaded };
 }
