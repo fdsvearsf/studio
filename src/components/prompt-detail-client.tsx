@@ -87,7 +87,7 @@ export default function PromptDetailClient() {
   
   if (!prompt) {
     return (
-      <div className="container mx-auto px-4 py-8 text-center">
+      <div className="container mx-auto px-2 py-8 md:px-4 text-center">
         <p className="text-destructive">Could not load prompt details. The link may be invalid.</p>
         <Button onClick={() => router.push('/')} className="mt-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -98,7 +98,7 @@ export default function PromptDetailClient() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl space-y-8">
+    <div className="container mx-auto px-2 py-8 md:px-4 max-w-4xl space-y-8">
       <Button variant="outline" onClick={() => router.back()}>
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
