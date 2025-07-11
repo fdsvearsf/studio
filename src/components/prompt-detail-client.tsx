@@ -129,14 +129,16 @@ export default function PromptDetailClient() {
               {animatedPrompt}
               {isTyping && <BlinkingCursor />}
             </p>
-            <Button size="lg" onClick={handleCopy} disabled={isCopied} className="w-full sm:w-auto">
-              {isCopied ? (
-                <Check className="mr-2 h-5 w-5" />
-              ) : (
-                <Copy className="mr-2 h-5 w-5" />
-              )}
-              {isCopied ? 'Copied!' : 'Copy Prompt'}
-            </Button>
+            {!isTyping && (
+                <Button size="lg" onClick={handleCopy} disabled={isCopied} className="w-full sm:w-auto">
+                    {isCopied ? (
+                        <Check className="mr-2 h-5 w-5" />
+                    ) : (
+                        <Copy className="mr-2 h-5 w-5" />
+                    )}
+                    {isCopied ? 'Copied!' : 'Copy Prompt'}
+                </Button>
+            )}
           </div>
         )}
       </div>
