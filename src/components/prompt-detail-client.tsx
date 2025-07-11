@@ -129,7 +129,7 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full space-y-4">
-            <p className="text-base font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
+            <p className="text-sm md:text-base font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
               {animatedPrompt}
               {isTyping && <BlinkingCursor />}
             </p>
