@@ -6,9 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PromptCard } from '@/components/prompt-card';
 import { PromptCardSkeleton } from '@/components/prompt-card-skeleton';
 import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Heart } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
+import { useFavorites } from '@/hooks/use-favorites';
 
 const API_URL = "https://api.sheetbest.com/sheets/128569d1-3e34-4e6f-b5bd-0a37b7bf53b9";
 
@@ -16,6 +17,7 @@ export function PromptGallery() {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { favorites, isLoaded } = useFavorites();
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -28,8 +30,8 @@ export function PromptGallery() {
       const data: Omit<Prompt, 'id'>[] = await response.json();
       const validCategories = ["New", "Trending"];
       const processedData = data
-        .filter(p => p.prompt && p.image_url && validCategories.includes(p.category))
-        .map((p, index) => ({ ...p, id: index }));
+        .filter(p => p.prompt && p.image_url && (validCategories.includes(p.category) || !p.category))
+        .map((p, index) => ({ ...p, id: p.prompt.length + index, category: p.category || 'New' }));
       setPrompts(processedData);
     } catch (e: any) {
       setError(e.message || "Failed to fetch prompts.");
@@ -85,10 +87,11 @@ export function PromptGallery() {
       )}
 
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 max-w-md">
+        <TabsList className="grid w-full grid-cols-4 max-w-md">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="new">New</TabsTrigger>
           <TabsTrigger value="trending">Trending</TabsTrigger>
+          <TabsTrigger value="favorites">Favorites</TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="mt-6">
           {isLoading ? renderSkeleton() : renderGrid(prompts)}
@@ -98,6 +101,17 @@ export function PromptGallery() {
         </TabsContent>
         <TabsContent value="trending" className="mt-6">
           {isLoading ? renderSkeleton() : renderGrid(trendingPrompts)}
+        </TabsContent>
+        <TabsContent value="favorites" className="mt-6">
+          {!isLoaded ? renderSkeleton() : favorites.length > 0 ? renderGrid(favorites) : (
+             <div className="text-center py-12">
+                <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
+                <h3 className="mt-4 text-lg font-semibold">No Favorites Yet</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Click the heart icon on any prompt to save it here.
+                </p>
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>

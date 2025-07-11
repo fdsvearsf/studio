@@ -6,8 +6,10 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Wand2, Copy, Check, ArrowLeft, Loader2 } from 'lucide-react';
+import { Wand2, Copy, Check, ArrowLeft, Loader2, Heart } from 'lucide-react';
 import type { Prompt } from '@/types';
+import { useFavorites } from '@/hooks/use-favorites';
+import { cn } from '@/lib/utils';
 
 const TypingIndicator = () => (
     <div className="flex items-center gap-2 text-muted-foreground">
@@ -44,6 +46,9 @@ export default function PromptDetailClient() {
     }
   }, [searchParams]);
 
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = prompt ? isFavorite(prompt.id) : false;
+
   useEffect(() => {
     if (isGenerating) {
       const timer = setTimeout(() => {
@@ -58,10 +63,9 @@ export default function PromptDetailClient() {
   useEffect(() => {
     if (isTyping && prompt?.prompt) {
       if (animatedPrompt.length < prompt.prompt.length) {
-        // For average length prompts (e.g. 200 chars), 10s is 50ms/char
         const timeoutId = setTimeout(() => {
           setAnimatedPrompt(prompt.prompt.slice(0, animatedPrompt.length + 1));
-        }, 50); 
+        }, 10); 
         return () => clearTimeout(timeoutId);
       } else {
         setIsTyping(false);
@@ -123,14 +127,15 @@ export default function PromptDetailClient() {
           </Button>
         )}
         {isGenerating && <TypingIndicator />}
-        {isRevealed && prompt && (
+        {isRevealed && (
           <div className="w-full space-y-4">
             <p className="text-base font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
               {animatedPrompt}
               {isTyping && <BlinkingCursor />}
             </p>
             {!isTyping && (
-                <Button size="lg" onClick={handleCopy} disabled={isCopied} className="w-full sm:w-auto">
+              <div className="flex flex-wrap gap-2">
+                <Button size="lg" onClick={handleCopy} disabled={isCopied} className="flex-grow sm:flex-grow-0">
                     {isCopied ? (
                         <Check className="mr-2 h-5 w-5" />
                     ) : (
@@ -138,6 +143,11 @@ export default function PromptDetailClient() {
                     )}
                     {isCopied ? 'Copied!' : 'Copy Prompt'}
                 </Button>
+                <Button size="lg" variant="outline" onClick={() => toggleFavorite(prompt)} className="flex-grow sm:flex-grow-0">
+                  <Heart className={cn("mr-2 h-5 w-5", isFav && "fill-red-500 text-red-500")} />
+                  {isFav ? 'Favorited' : 'Favorite'}
+                </Button>
+              </div>
             )}
           </div>
         )}

@@ -5,8 +5,10 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import type { Prompt } from '@/types';
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useFavorites } from '@/hooks/use-favorites';
+import { Button } from './ui/button';
 
 interface PromptCardProps {
   prompt: Prompt;
@@ -14,13 +16,31 @@ interface PromptCardProps {
 
 export function PromptCard({ prompt }: PromptCardProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = isFavorite(prompt.id);
+  
   const encodedPrompt = encodeURIComponent(Buffer.from(JSON.stringify(prompt)).toString('base64'));
 
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(prompt);
+  };
+
   return (
-    <Link href={`/prompt?data=${encodedPrompt}`} className="group block">
-      <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+    <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 group">
+      <Link href={`/prompt?data=${encodedPrompt}`} className="block">
         <CardContent className="p-0">
           <div className="aspect-square relative bg-muted flex items-center justify-center">
+             <Button
+                size="icon"
+                variant="ghost"
+                className="absolute top-2 right-2 z-20 h-9 w-9 text-white bg-black/30 hover:bg-black/50 hover:text-white"
+                onClick={handleFavoriteClick}
+              >
+                <Heart className={cn("h-5 w-5", isFav ? "fill-red-500 text-red-500" : "text-white")} />
+                <span className="sr-only">Favorite</span>
+              </Button>
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center z-10">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -40,7 +60,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
             />
           </div>
         </CardContent>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 }
