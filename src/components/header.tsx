@@ -1,5 +1,6 @@
 import { Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
   return (
@@ -9,6 +10,7 @@ export function Header() {
           <Sparkles className="w-7 h-7 text-primary" />
           <h1 className="text-2xl font-bold">PromptX</h1>
         </Link>
+        <ThemeToggle />
       </div>
     </header>
   );
