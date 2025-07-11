@@ -53,7 +53,7 @@ export function PromptGallery() {
   }, [prompts]);
 
   const renderGrid = (items: Prompt[]) => (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
       {items.map(prompt => (
         <PromptCard key={prompt.id} prompt={prompt} />
       ))}
@@ -61,7 +61,7 @@ export function PromptGallery() {
   );
 
   const renderSkeleton = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
       {Array.from({ length: 8 }).map((_, i) => (
         <PromptCardSkeleton key={i} />
       ))}
