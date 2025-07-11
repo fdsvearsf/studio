@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,6 +16,11 @@ const TypingIndicator = () => (
     </div>
 );
 
+const BlinkingCursor = () => (
+    <span className="inline-block w-2 h-5 bg-foreground animate-pulse ml-1" />
+);
+
+
 export default function PromptDetailClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -24,6 +29,8 @@ export default function PromptDetailClient() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [animatedPrompt, setAnimatedPrompt] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
   const prompt: Prompt | null = useMemo(() => {
     const data = searchParams.get('data');
@@ -42,10 +49,26 @@ export default function PromptDetailClient() {
       const timer = setTimeout(() => {
         setIsGenerating(false);
         setIsRevealed(true);
+        setIsTyping(true);
       }, 3000); // 3 second delay for "generation"
       return () => clearTimeout(timer);
     }
   }, [isGenerating]);
+
+  useEffect(() => {
+    if (isTyping && prompt?.prompt) {
+      if (animatedPrompt.length < prompt.prompt.length) {
+        // For average length prompts (e.g. 200 chars), 10s is 50ms/char
+        const timeoutId = setTimeout(() => {
+          setAnimatedPrompt(prompt.prompt.slice(0, animatedPrompt.length + 1));
+        }, 50); 
+        return () => clearTimeout(timeoutId);
+      } else {
+        setIsTyping(false);
+      }
+    }
+  }, [isTyping, animatedPrompt, prompt?.prompt]);
+
 
   const handleCopy = () => {
     if (!prompt?.prompt) return;
@@ -103,7 +126,8 @@ export default function PromptDetailClient() {
         {isRevealed && prompt && (
           <div className="w-full space-y-4">
             <p className="text-lg font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
-              {prompt.prompt}
+              {animatedPrompt}
+              {isTyping && <BlinkingCursor />}
             </p>
             <Button size="lg" onClick={handleCopy} disabled={isCopied} className="w-full sm:w-auto">
               {isCopied ? (
