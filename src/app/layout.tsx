@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'PromptX',
+  title: 'PromptPix',
   description: 'A modern and minimal AI Prompt Gallery.',
 };
 
