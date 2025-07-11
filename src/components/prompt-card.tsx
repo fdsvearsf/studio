@@ -10,7 +10,7 @@ interface PromptCardProps {
 }
 
 export function PromptCard({ prompt }: PromptCardProps) {
-  const encodedPrompt = btoa(JSON.stringify(prompt));
+  const encodedPrompt = encodeURIComponent(Buffer.from(JSON.stringify(prompt)).toString('base64'));
 
   return (
     <Link href={`/prompt?data=${encodedPrompt}`} className="group block">

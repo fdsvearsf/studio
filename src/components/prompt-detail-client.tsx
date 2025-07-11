@@ -29,7 +29,8 @@ export default function PromptDetailClient() {
     const data = searchParams.get('data');
     if (!data) return null;
     try {
-      return JSON.parse(atob(data));
+      const decodedData = decodeURIComponent(data);
+      return JSON.parse(Buffer.from(decodedData, 'base64').toString('utf8'));
     } catch (error) {
       console.error("Failed to parse prompt data:", error);
       return null;
