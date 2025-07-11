@@ -103,7 +103,11 @@ export function PromptGallery() {
           {isLoading ? renderSkeleton() : renderGrid(trendingPrompts)}
         </TabsContent>
         <TabsContent value="favorites" className="mt-6">
-          {!isLoaded ? renderSkeleton() : favorites.length > 0 ? renderGrid(favorites) : (
+          {!isLoaded ? (
+            renderSkeleton()
+          ) : favorites.length > 0 ? (
+            renderGrid(favorites)
+          ) : (
              <div className="text-center py-12">
                 <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
                 <h3 className="mt-4 text-lg font-semibold">No Favorites Yet</h3>
