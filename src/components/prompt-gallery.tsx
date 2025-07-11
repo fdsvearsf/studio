@@ -84,11 +84,15 @@ export function PromptGallery() {
         </Alert>
       )}
 
-      <Tabs defaultValue="new" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-md">
+      <Tabs defaultValue="all" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 max-w-md">
+          <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="new">New</TabsTrigger>
           <TabsTrigger value="trending">Trending</TabsTrigger>
         </TabsList>
+        <TabsContent value="all" className="mt-6">
+          {isLoading ? renderSkeleton() : renderGrid(prompts)}
+        </TabsContent>
         <TabsContent value="new" className="mt-6">
           {isLoading ? renderSkeleton() : renderGrid(newPrompts)}
         </TabsContent>
