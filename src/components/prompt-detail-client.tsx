@@ -24,6 +24,7 @@ export default function PromptDetailClient() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [displayedPrompt, setDisplayedPrompt] = useState("");
 
   const prompt: Prompt | null = useMemo(() => {
     const data = searchParams.get('data');
@@ -42,10 +43,33 @@ export default function PromptDetailClient() {
       const timer = setTimeout(() => {
         setIsGenerating(false);
         setIsRevealed(true);
-      }, 10000); // 10 second delay
+      }, 3000); // 3 second delay for "generation"
       return () => clearTimeout(timer);
     }
   }, [isGenerating]);
+
+  useEffect(() => {
+    if (isRevealed && prompt?.prompt) {
+      setDisplayedPrompt(""); // Reset on reveal
+      const fullPrompt = prompt.prompt;
+      const promptLength = fullPrompt.length;
+      // Aim for a total duration of ~10 seconds, but faster for very short prompts
+      const typingDuration = Math.max(promptLength * 30, 10000);
+      const delay = typingDuration / promptLength;
+
+      let i = 0;
+      const intervalId = setInterval(() => {
+        setDisplayedPrompt((prev) => prev + fullPrompt.charAt(i));
+        i++;
+        if (i >= promptLength) {
+          clearInterval(intervalId);
+        }
+      }, delay);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [isRevealed, prompt?.prompt]);
+
 
   const handleCopy = () => {
     if (!prompt?.prompt) return;
@@ -102,10 +126,11 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full space-y-4">
-            <p className="text-lg font-mono p-4 border rounded-md bg-muted/50 text-foreground">
-              {prompt.prompt}
+            <p className="text-lg font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
+              {displayedPrompt}
+              <span className="inline-block w-0.5 h-6 bg-foreground animate-ping ml-1" />
             </p>
-            <Button size="lg" onClick={handleCopy} disabled={isCopied} className="w-full sm:w-auto">
+            <Button size="lg" onClick={handleCopy} disabled={isCopied || displayedPrompt.length !== prompt.prompt.length} className="w-full sm:w-auto">
               {isCopied ? (
                 <Check className="mr-2 h-5 w-5" />
               ) : (
