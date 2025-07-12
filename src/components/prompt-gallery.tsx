@@ -11,7 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
 
-const API_URL = "https://api.sheetbest.com/sheets/128569d1-3e34-4e6f-b5bd-0a37b7bf53b9";
+const API_URL = "https://script.google.com/macros/s/AKfycbzz476jq3qOdi4TdjeEg4-b_LaVi_68QXfkDZJ1m0DNUH-B2_UamzxUJLOJMg0DwTWEqw/exec";
 
 export function PromptGallery() {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
