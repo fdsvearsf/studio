@@ -33,6 +33,12 @@ const nextConfig: NextConfig = {
         hostname: 'apktek.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.ghauseditz.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
