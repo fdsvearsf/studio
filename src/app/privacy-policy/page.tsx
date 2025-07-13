@@ -1,5 +1,8 @@
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 export default function PrivacyPolicyPage() {
   return (
@@ -7,6 +10,12 @@ export default function PrivacyPolicyPage() {
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
+          <Link href="/" passHref>
+            <Button variant="outline" className="mb-8">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Button>
+          </Link>
           <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
           <div className="space-y-4 text-muted-foreground">
             <p>
