@@ -6,18 +6,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PromptCard } from '@/components/prompt-card';
 import { PromptCardSkeleton } from '@/components/prompt-card-skeleton';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Heart } from 'lucide-react';
+import { RefreshCw, Heart, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzz476jq3qOdi4TdjeEg4-b_LaVi_68QXfkDZJ1m0DNUH-B2_UamzxUJLOJMg0DwTWEqw/exec";
+const INITIAL_LOAD_COUNT = 10;
+const LOAD_MORE_COUNT = 10;
 
 export function PromptGallery() {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { favorites, isLoaded } = useFavorites();
+  const [visibleCounts, setVisibleCounts] = useState({
+    all: INITIAL_LOAD_COUNT,
+    new: INITIAL_LOAD_COUNT,
+    trending: INITIAL_LOAD_COUNT,
+    favorites: INITIAL_LOAD_COUNT,
+  });
+  const [activeTab, setActiveTab] = useState('all');
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -52,13 +61,33 @@ export function PromptGallery() {
     };
   }, [prompts]);
 
-  const renderGrid = (items: Prompt[]) => (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
-      {items.map(prompt => (
-        <PromptCard key={prompt.id} prompt={prompt} />
-      ))}
-    </div>
-  );
+  const handleLoadMore = (category: keyof typeof visibleCounts) => {
+    setVisibleCounts(prev => ({
+      ...prev,
+      [category]: prev[category] + LOAD_MORE_COUNT,
+    }));
+  };
+
+  const renderGrid = (items: Prompt[], category: keyof typeof visibleCounts) => {
+    const visibleItems = items.slice(0, visibleCounts[category]);
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
+          {visibleItems.map(prompt => (
+            <PromptCard key={prompt.id} prompt={prompt} />
+          ))}
+        </div>
+        {visibleItems.length < items.length && (
+          <div className="flex justify-center">
+            <Button onClick={() => handleLoadMore(category)}>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Load More
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const renderSkeleton = () => (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
@@ -86,7 +115,7 @@ export function PromptGallery() {
         </Alert>
       )}
 
-      <Tabs defaultValue="all" className="w-full">
+      <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
         <TabsList className="grid w-full grid-cols-4 max-w-md">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="new">New</TabsTrigger>
@@ -94,19 +123,19 @@ export function PromptGallery() {
           <TabsTrigger value="favorites">Favorites</TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="mt-6">
-          {isLoading ? renderSkeleton() : renderGrid(prompts)}
+          {isLoading ? renderSkeleton() : renderGrid(prompts, 'all')}
         </TabsContent>
         <TabsContent value="new" className="mt-6">
-          {isLoading ? renderSkeleton() : renderGrid(newPrompts)}
+          {isLoading ? renderSkeleton() : renderGrid(newPrompts, 'new')}
         </TabsContent>
         <TabsContent value="trending" className="mt-6">
-          {isLoading ? renderSkeleton() : renderGrid(trendingPrompts)}
+          {isLoading ? renderSkeleton() : renderGrid(trendingPrompts, 'trending')}
         </TabsContent>
         <TabsContent value="favorites" className="mt-6">
           {!isLoaded ? (
             renderSkeleton()
           ) : favorites.length > 0 ? (
-            renderGrid(favorites)
+            renderGrid(favorites, 'favorites')
           ) : (
              <div className="text-center py-12">
                 <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
