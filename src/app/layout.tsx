@@ -4,8 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'PromptPix',
-  description: 'A modern and minimal AI Prompt Gallery.',
+  title: 'PromptPix AI Photo Editing - Unlimited AI Image Generation Prompt',
+  description: 'Transform your photos with PromptPix – the ultimate AI photo editing tool. Explore unlimited image generation prompts powered by advanced artificial intelligence.',
 };
 
 export default function RootLayout({
