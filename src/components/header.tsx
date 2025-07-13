@@ -12,7 +12,7 @@ export function Header() {
           <h1 className="text-2xl font-bold">PromptPix</h1>
         </Link>
         <div className="flex items-center gap-4">
-          <nav className="hidden md:flex gap-4">
+          <nav className="flex gap-4">
             <Button variant="ghost" asChild>
               <Link href="/blog">Blog</Link>
             </Button>
