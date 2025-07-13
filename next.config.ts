@@ -39,7 +39,13 @@ const nextConfig: NextConfig = {
         hostname: 'www.ghauseditz.com',
         port: '',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'bjndyu4zavci6r2z.public.blob.vercel-storage.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
