@@ -8,21 +8,21 @@ import { Button } from '@/components/ui/button';
 const blogPosts = [
   {
     id: 1,
-    title: 'Mastering AI Art: A Beginner\'s Guide to Writing Effective Prompts',
-    description: 'Unlock the full potential of AI image generators by learning the art and science of crafting the perfect prompt. This guide covers the basics to get you started.',
-    href: '/blog/mastering-ai-art-prompts',
+    title: 'How to Generate AI Image Editing Prompts on PromptPix',
+    description: 'Learn the step-by-step process of finding, generating, and using high-quality prompts from PromptPix to create stunning AI images.',
+    href: '/blog/how-to-generate-prompts-on-promptpix',
   },
   {
     id: 2,
-    title: 'Top 5 AI Art Generators You Should Try in 2024',
-    description: 'We review the most popular and powerful AI art tools available today. Find out which one is right for your creative needs.',
-    href: '/blog/top-5-ai-art-generators-2024',
+    title: 'PromptPix Review: What It Is and How It Works',
+    description: 'An in-depth look at PromptPix, a powerful directory for AI image prompts. Discover its features and how it can streamline your creative workflow.',
+    href: '/blog/promptpix-review',
   },
   {
     id: 3,
-    title: 'Case Study: How a Small Business Used AI Art for Their Marketing',
-    description: 'Discover how AI-generated visuals helped a startup create a stunning brand identity without a big budget. A real-world example of AI in action.',
-    href: '/blog/case-study-ai-art-marketing',
+    title: 'How to Edit Photos Using PromptPix Prompts in ChatGPT, Grok, and Other AI Tools',
+    description: 'A practical guide on taking prompts from PromptPix and using them effectively in popular AI tools like ChatGPT (DALL-E 3), Grok, and more.',
+    href: '/blog/how-to-edit-photos-with-prompts',
   }
 ];
 
