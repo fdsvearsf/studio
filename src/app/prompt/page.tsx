@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import PromptDetailClient from '@/components/prompt-detail-client';
 import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function PromptDetailPage() {
@@ -12,6 +13,7 @@ export default function PromptDetailPage() {
           <PromptDetailClient />
         </Suspense>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { PromptGallery } from '@/components/prompt-gallery';
 import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
           <PromptGallery />
         </Suspense>
       </main>
+      <Footer />
     </div>
   );
 }
