@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
+import { Button } from './ui/button';
 
 export function Header() {
   return (
@@ -10,7 +11,14 @@ export function Header() {
           <Image src="https://apktek.com/wp-content/uploads/2025/07/promptx-logo.png" alt="PromptPix Logo" width={32} height={32} />
           <h1 className="text-2xl font-bold">PromptPix</h1>
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-4">
+          <nav className="hidden md:flex gap-4">
+            <Button variant="ghost" asChild>
+              <Link href="/blog">Blog</Link>
+            </Button>
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
