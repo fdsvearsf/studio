@@ -2,7 +2,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const blogPosts = [
@@ -32,6 +32,12 @@ export default function BlogPage() {
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
+          <Link href="/" passHref>
+            <Button variant="outline" className="mb-8">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Button>
+          </Link>
           <h1 className="text-4xl font-bold mb-8 text-center">PromptPix Blog</h1>
           <p className="text-center text-muted-foreground mb-12">
             Tutorials, guides, and insights into the world of AI art and prompt engineering.
