@@ -21,11 +21,11 @@ export default function HowToUsePromptsPage() {
           
           <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden">
              <Image
-                src="https://placehold.co/600x400.png"
-                alt="Logos of various AI tools like ChatGPT and Grok"
+                src="https://www.ghauseditz.com/wp-content/uploads/2024/05/promptpix-ai-photo-editor-logo.png"
+                alt="PromptPix AI Photo Editor"
                 fill
                 className="object-cover"
-                data-ai-hint="AI logos"
+                data-ai-hint="logo brand"
               />
           </div>
 
