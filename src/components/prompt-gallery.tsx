@@ -68,7 +68,7 @@ export function PromptGallery() {
     }));
   };
 
-  const renderGrid = (items: Prompt[], category: keyof typeof visibleCounts) => {
+  const renderGrid = useCallback((items: Prompt[], category: keyof typeof visibleCounts) => {
     const visibleItems = items.slice(0, visibleCounts[category]);
     return (
       <div className="space-y-6">
@@ -87,7 +87,7 @@ export function PromptGallery() {
         )}
       </div>
     );
-  };
+  }, [visibleCounts]);
 
   const renderSkeleton = () => (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
@@ -97,6 +97,11 @@ export function PromptGallery() {
     </div>
   );
   
+  const favoritePrompts = useMemo(() => {
+    // This ensures that any changes to favorites will re-evaluate the list
+    return favorites;
+  }, [favorites]);
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -134,8 +139,8 @@ export function PromptGallery() {
         <TabsContent value="favorites" className="mt-6">
           {!isLoaded ? (
             renderSkeleton()
-          ) : favorites.length > 0 ? (
-            renderGrid(favorites, 'favorites')
+          ) : favoritePrompts.length > 0 ? (
+            renderGrid(favoritePrompts, 'favorites')
           ) : (
              <div className="text-center py-12">
                 <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
