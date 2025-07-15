@@ -46,6 +46,18 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+       {
+        protocol: 'https',
+        hostname: 'pub-13b4c27dd26d40419b31dd08a01050b4.r2.dev',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'rajaneditz.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
