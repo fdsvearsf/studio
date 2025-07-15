@@ -47,7 +47,7 @@ export function PromptGallery() {
               return char.charCodeAt(0) + ((acc << 5) - acc);
             }, 0);
             return { ...p, id: Math.abs(id), category: p.category || 'New' };
-        });
+        }).reverse(); // Reverse the array here
       setPrompts(processedData);
     } catch (e: any) {
       setError(e.message || "Failed to fetch prompts.");
@@ -74,7 +74,7 @@ export function PromptGallery() {
     }));
   };
 
-  const renderGrid = useCallback((items: Prompt[], category: keyof typeof visibleCounts) => {
+  const renderGrid = (items: Prompt[], category: keyof typeof visibleCounts) => {
     const visibleItems = items.slice(0, visibleCounts[category]);
     return (
       <div className="space-y-6">
@@ -93,7 +93,7 @@ export function PromptGallery() {
         )}
       </div>
     );
-  }, [visibleCounts]);
+  };
 
   const renderSkeleton = () => (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
@@ -141,7 +141,7 @@ export function PromptGallery() {
           {!isLoaded ? (
             renderSkeleton()
           ) : favorites.length > 0 ? (
-            renderGrid(favorites, 'favorites')
+            renderGrid(favorites.slice().reverse(), 'favorites')
           ) : (
              <div className="text-center py-12">
                 <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
