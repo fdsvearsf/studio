@@ -97,11 +97,6 @@ export function PromptGallery() {
     </div>
   );
   
-  const favoritePrompts = useMemo(() => {
-    // This ensures that any changes to favorites will re-evaluate the list
-    return favorites;
-  }, [favorites]);
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -139,8 +134,8 @@ export function PromptGallery() {
         <TabsContent value="favorites" className="mt-6">
           {!isLoaded ? (
             renderSkeleton()
-          ) : favoritePrompts.length > 0 ? (
-            renderGrid(favoritePrompts, 'favorites')
+          ) : favorites.length > 0 ? (
+            renderGrid(favorites, 'favorites')
           ) : (
              <div className="text-center py-12">
                 <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
