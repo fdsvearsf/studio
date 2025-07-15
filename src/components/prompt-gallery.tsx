@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Prompt } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PromptCard } from '@/components/prompt-card';
@@ -40,7 +40,14 @@ export function PromptGallery() {
       const validCategories = ["New", "Trending"];
       const processedData = data
         .filter(p => p.prompt && p.image_url && (validCategories.includes(p.category) || !p.category))
-        .map((p, index) => ({ ...p, id: p.prompt.length + index, category: p.category || 'New' }));
+        .map((p, index) => {
+            const idString = `${index}-${p.image_url.slice(-10)}-${p.prompt.slice(0, 10)}`;
+            // Simple hash function
+            const id = idString.split('').reduce((acc, char) => {
+              return char.charCodeAt(0) + ((acc << 5) - acc);
+            }, 0);
+            return { ...p, id: Math.abs(id), category: p.category || 'New' };
+        });
       setPrompts(processedData);
     } catch (e: any) {
       setError(e.message || "Failed to fetch prompts.");
@@ -54,12 +61,11 @@ export function PromptGallery() {
     fetchData();
   }, [fetchData]);
 
-  const { newPrompts, trendingPrompts } = useMemo(() => {
-    return {
+  const { newPrompts, trendingPrompts } = {
       newPrompts: prompts.filter(p => p.category === 'New'),
       trendingPrompts: prompts.filter(p => p.category === 'Trending'),
-    };
-  }, [prompts]);
+  };
+  
 
   const handleLoadMore = (category: keyof typeof visibleCounts) => {
     setVisibleCounts(prev => ({
