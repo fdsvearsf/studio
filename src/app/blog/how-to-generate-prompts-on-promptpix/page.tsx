@@ -1,5 +1,4 @@
 import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -53,7 +52,6 @@ export default function HowToGeneratePromptsPage() {
           </div>
         </article>
       </main>
-      <Footer />
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -61,7 +60,6 @@ export default function BlogPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
