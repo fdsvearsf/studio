@@ -21,7 +21,7 @@ export default function PromptPixReviewPage() {
           
           <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden">
              <Image
-                src="https://www.ghauseditz.com/wp-content/uploads/2024/05/promptpix-ai-photo-editor-logo.png"
+                src="https://bjndyu4zavci6r2z.public.blob.vercel-storage.com/images/promptpix%20bd%20AI%20Photo%20Editing%20%281%29.png"
                 alt="PromptPix AI Photo Editor"
                 fill
                 className="object-cover"
