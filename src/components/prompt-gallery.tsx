@@ -44,10 +44,10 @@ export function PromptGallery() {
         .filter(p => p.prompt && p.image_url && (validCategories.includes(p.category) || !p.category))
         .map((p, index) => ({ 
           ...p, 
-          id: index + 1, 
+          id: index + 1, // Oldest prompt gets ID 1
           category: p.category || 'New' 
         }));
-      setPrompts(processedData.slice().reverse());
+      setPrompts(processedData.slice().reverse()); // Show newest first
     } catch (e: any) {
       setError(e.message || "Failed to fetch prompts.");
       console.error(e);
@@ -64,7 +64,8 @@ export function PromptGallery() {
     if (!searchQuery) {
       return prompts;
     }
-    return prompts.filter(p => p.id.toString().includes(searchQuery));
+    // Search for the exact ID
+    return prompts.filter(p => p.id.toString() === searchQuery);
   }, [prompts, searchQuery]);
 
   const newPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'New'), [filteredPrompts]);
@@ -100,7 +101,7 @@ export function PromptGallery() {
             <PromptCard key={prompt.id} prompt={prompt} />
           ))}
         </div>
-        {visibleItems.length < items.length && (
+        {visibleItems.length < items.length && !searchQuery && (
           <div className="flex justify-center">
             <Button onClick={() => handleLoadMore(category)}>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
