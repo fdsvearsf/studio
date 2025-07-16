@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
 import { Button } from './ui/button';
+import { Rss } from 'lucide-react';
 
 export function Header() {
   return (
@@ -9,12 +10,16 @@ export function Header() {
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 text-foreground">
           <Image src="https://apktek.com/wp-content/uploads/2025/07/promptx-logo.png" alt="PromptPix Logo" width={32} height={32} />
-          <h1 className="text-2xl font-bold">PromptPix</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">PromptPix</h1>
         </Link>
-        <div className="flex items-center gap-4">
-          <nav className="flex gap-4">
-            <Button variant="outline" asChild>
-              <Link href="/blog">Blog</Link>
+        <div className="flex items-center gap-2 sm:gap-4">
+          <nav>
+            <Button asChild variant="outline">
+                <Link href="/blog">
+                    <Rss className="h-4 w-4" />
+                    <span className="hidden sm:inline-block ml-2">Blog</span>
+                    <span className="sr-only">Blog</span>
+                </Link>
             </Button>
           </nav>
           <ThemeToggle />
