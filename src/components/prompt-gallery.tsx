@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { Prompt } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PromptCard } from '@/components/prompt-card';
 import { PromptCardSkeleton } from '@/components/prompt-card-skeleton';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Heart, Loader2 } from 'lucide-react';
+import { RefreshCw, Heart, Loader2, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
+import { Input } from '@/components/ui/input';
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzz476jq3qOdi4TdjeEg4-b_LaVi_68QXfkDZJ1m0DNUH-B2_UamzxUJLOJMg0DwTWEqw/exec";
 const INITIAL_LOAD_COUNT = 10;
@@ -20,6 +21,7 @@ export function PromptGallery() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { favorites, isLoaded } = useFavorites();
+  const [searchQuery, setSearchQuery] = useState('');
   const [visibleCounts, setVisibleCounts] = useState({
     all: INITIAL_LOAD_COUNT,
     new: INITIAL_LOAD_COUNT,
@@ -61,11 +63,19 @@ export function PromptGallery() {
     fetchData();
   }, [fetchData]);
 
-  const { newPrompts, trendingPrompts } = {
-      newPrompts: prompts.filter(p => p.category === 'New'),
-      trendingPrompts: prompts.filter(p => p.category === 'Trending'),
-  };
-  
+  const filteredPrompts = useMemo(() => {
+    if (!searchQuery) {
+      return prompts;
+    }
+    return prompts.filter(p => p.id.toString().includes(searchQuery));
+  }, [prompts, searchQuery]);
+
+  const { newPrompts, trendingPrompts, favoritePrompts } = useMemo(() => ({
+    newPrompts: filteredPrompts.filter(p => p.category === 'New'),
+    trendingPrompts: filteredPrompts.filter(p => p.category === 'Trending'),
+    favoritePrompts: favorites.filter(fav => filteredPrompts.some(p => p.id === fav.id)).slice().reverse(),
+  }), [filteredPrompts, favorites]);
+
 
   const handleLoadMore = (category: keyof typeof visibleCounts) => {
     setVisibleCounts(prev => ({
@@ -74,7 +84,16 @@ export function PromptGallery() {
     }));
   };
 
-  const renderGrid = (items: Prompt[], category: keyof typeof visibleCounts) => {
+  const renderGrid = (items: Prompt[], category: keyof typeof visibleCounts, noResultsMessage: string = "No prompts found.") => {
+    if (items.length === 0) {
+        return (
+            <div className="text-center py-12">
+                <Search className="mx-auto h-12 w-12 text-muted-foreground" />
+                <h3 className="mt-4 text-lg font-semibold">{noResultsMessage}</h3>
+                {searchQuery && <p className="mt-1 text-sm text-muted-foreground">Try a different search ID.</p>}
+            </div>
+        );
+    }
     const visibleItems = items.slice(0, visibleCounts[category]);
     return (
       <div className="space-y-6">
@@ -105,12 +124,23 @@ export function PromptGallery() {
   
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <h2 className="text-3xl font-bold tracking-tight">AI Photo Editing</h2>
-        <Button variant="outline" size="icon" onClick={fetchData} disabled={isLoading}>
-          <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-          <span className="sr-only">Refresh</span>
-        </Button>
+         <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                    placeholder="Search by ID..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9"
+                />
+            </div>
+            <Button variant="outline" size="icon" onClick={fetchData} disabled={isLoading}>
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+              <span className="sr-only">Refresh</span>
+            </Button>
+        </div>
       </div>
 
       {error && (
@@ -129,7 +159,7 @@ export function PromptGallery() {
           <TabsTrigger value="favorites">Favorites</TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="mt-6">
-          {isLoading ? renderSkeleton() : renderGrid(prompts, 'all')}
+          {isLoading ? renderSkeleton() : renderGrid(filteredPrompts, 'all')}
         </TabsContent>
         <TabsContent value="new" className="mt-6">
           {isLoading ? renderSkeleton() : renderGrid(newPrompts, 'new')}
@@ -141,7 +171,7 @@ export function PromptGallery() {
           {!isLoaded ? (
             renderSkeleton()
           ) : favorites.length > 0 ? (
-            renderGrid(favorites.slice().reverse(), 'favorites')
+            renderGrid(favoritePrompts, 'favorites', 'No favorites match your search.')
           ) : (
              <div className="text-center py-12">
                 <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
