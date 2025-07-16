@@ -42,10 +42,12 @@ export function PromptGallery() {
       const validCategories = ["New", "Trending"];
       const processedData = data
         .filter(p => p.prompt && p.image_url && (validCategories.includes(p.category) || !p.category))
-        .map((p, index) => {
-            return { ...p, id: index + 1, category: p.category || 'New' };
-        }).reverse();
-      setPrompts(processedData);
+        .map((p, index) => ({ 
+          ...p, 
+          id: index + 1, 
+          category: p.category || 'New' 
+        }));
+      setPrompts(processedData.slice().reverse());
     } catch (e: any) {
       setError(e.message || "Failed to fetch prompts.");
       console.error(e);
@@ -65,9 +67,12 @@ export function PromptGallery() {
     return prompts.filter(p => p.id.toString().includes(searchQuery));
   }, [prompts, searchQuery]);
 
-  const newPrompts = filteredPrompts.filter(p => p.category === 'New');
-  const trendingPrompts = filteredPrompts.filter(p => p.category === 'Trending');
-  const favoritePrompts = favorites.filter(fav => filteredPrompts.some(p => p.id === fav.id)).slice().reverse();
+  const newPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'New'), [filteredPrompts]);
+  const trendingPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'Trending'), [filteredPrompts]);
+  const favoritePrompts = useMemo(() => {
+    const favIds = new Set(favorites.map(f => f.id));
+    return prompts.filter(p => favIds.has(p.id)).slice().reverse();
+  }, [prompts, favorites]);
 
 
   const handleLoadMore = (category: keyof typeof visibleCounts) => {
