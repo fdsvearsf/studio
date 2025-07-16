@@ -124,7 +124,7 @@ export function PromptGallery() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <h2 className="text-xl sm:text-3xl font-bold tracking-tight text-center sm:text-left bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">Free AI Photo Editing Prompt Generator</h2>
+        <h2 className="text-base sm:text-3xl font-bold tracking-tight text-center sm:text-left bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">Free AI Photo Editing Prompt Generator</h2>
          <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="relative w-full sm:w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
