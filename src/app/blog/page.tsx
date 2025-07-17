@@ -41,15 +41,15 @@ export default function BlogPage() {
           <p className="text-xs sm:text-base text-center text-muted-foreground mb-6 sm:mb-12">
             Tutorials, guides, and insights into the world of AI art and prompt engineering.
           </p>
-          <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-4 sm:space-y-6">
             {blogPosts.map((post) => (
               <Card key={post.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-2xl">{post.title}</CardTitle>
-                  <CardDescription className="pt-2 text-xs sm:text-sm">{post.description}</CardDescription>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-base sm:text-xl">{post.title}</CardTitle>
+                  <CardDescription className="pt-1 text-xs sm:text-sm">{post.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <Button asChild variant="outline">
+                <CardContent className="p-4 pt-0">
+                  <Button asChild variant="outline" size="sm">
                     <Link href={post.href}>
                       Read More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
