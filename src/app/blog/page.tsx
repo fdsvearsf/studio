@@ -32,21 +32,21 @@ export default function BlogPage() {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
           <Link href="/" passHref>
-            <Button variant="outline" className="mb-8">
+            <Button variant="outline" className="mb-4 sm:mb-8">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Button>
           </Link>
-          <h1 className="text-2xl sm:text-4xl font-bold mb-8 text-center">PromptPix Blog</h1>
-          <p className="text-sm sm:text-base text-center text-muted-foreground mb-12">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-8 text-center">PromptPix Blog</h1>
+          <p className="text-xs sm:text-base text-center text-muted-foreground mb-6 sm:mb-12">
             Tutorials, guides, and insights into the world of AI art and prompt engineering.
           </p>
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {blogPosts.map((post) => (
               <Card key={post.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-xl sm:text-2xl">{post.title}</CardTitle>
-                  <CardDescription className="pt-2 text-sm">{post.description}</CardDescription>
+                  <CardTitle className="text-lg sm:text-2xl">{post.title}</CardTitle>
+                  <CardDescription className="pt-2 text-xs sm:text-sm">{post.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild variant="outline">
