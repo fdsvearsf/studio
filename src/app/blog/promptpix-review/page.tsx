@@ -30,15 +30,15 @@ export default function PromptPixReviewPage() {
           </div>
 
           <div className="prose dark:prose-invert max-w-none space-y-3 text-xs sm:text-base text-muted-foreground">
-            <h2 className="text-xl sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">What is PromptPix?</h2>
+            <h2 className="text-lg sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">What is PromptPix?</h2>
             <p>
               PromptPix is a web-based platform designed for AI art enthusiasts, developers, and creatives. At its core, it's a curated directory of high-quality prompts for AI image generators. Instead of struggling to write complex prompts from scratch, users can browse a visual gallery and instantly get the exact text needed to produce similar results.
             </p>
-            <h2 className="text-xl sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">How Does It Work?</h2>
+            <h2 className="text-lg sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">How Does It Work?</h2>
             <p>
               The workflow is incredibly straightforward. The platform presents images categorized by style or popularity. Users click on an image they like, which leads them to a detail page. A "Generate Prompt" button reveals the underlying prompt, which can then be copied with a single click. This simple process removes the guesswork from prompt engineering and accelerates the creative process.
             </p>
-            <h2 className="text-xl sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">Who is it For?</h2>
+            <h2 className="text-lg sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">Who is it For?</h2>
             <p>
               PromptPix is for everyone.
             </p>
@@ -47,7 +47,7 @@ export default function PromptPixReviewPage() {
                 <li><strong>Artists:</strong> Creatives can quickly find inspiration for new styles or compositions without getting bogged down in technical jargon.</li>
                 <li><strong>Developers:</strong> It serves as a great resource for testing the capabilities of different AI models with proven prompts.</li>
             </ul>
-            <h2 className="text-xl sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">Key Features</h2>
+            <h2 className="text-lg sm:text-2xl font-semibold pt-2 sm:pt-4 text-foreground">Key Features</h2>
              <ul className="list-disc list-inside space-y-1 sm:space-y-2">
                 <li><strong>Visual-First Browsing:</strong> Discover prompts by looking at the images they produce.</li>
                 <li><strong>One-Click Copy:</strong> Grab prompts instantly without any hassle.</li>
