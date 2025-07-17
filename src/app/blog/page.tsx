@@ -37,16 +37,16 @@ export default function BlogPage() {
               Back to Home
             </Button>
           </Link>
-          <h1 className="text-4xl font-bold mb-8 text-center">PromptPix Blog</h1>
-          <p className="text-center text-muted-foreground mb-12">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-8 text-center">PromptPix Blog</h1>
+          <p className="text-sm sm:text-base text-center text-muted-foreground mb-12">
             Tutorials, guides, and insights into the world of AI art and prompt engineering.
           </p>
           <div className="space-y-8">
             {blogPosts.map((post) => (
               <Card key={post.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl">{post.title}</CardTitle>
-                  <CardDescription className="pt-2">{post.description}</CardDescription>
+                  <CardTitle className="text-xl sm:text-2xl">{post.title}</CardTitle>
+                  <CardDescription className="pt-2 text-sm">{post.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild variant="outline">
