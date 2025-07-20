@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import type { Prompt } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PromptCard } from '@/components/prompt-card';
@@ -11,15 +11,19 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
 import { Input } from '@/components/ui/input';
+import { fetchPrompts } from '@/lib/data';
 
-const API_URL = "https://script.google.com/macros/s/AKfycbzz476jq3qOdi4TdjeEg4-b_LaVi_68QXfkDZJ1m0DNUH-B2_UamzxUJLOJMg0DwTWEqw/exec";
 const INITIAL_LOAD_COUNT = 10;
 const LOAD_MORE_COUNT = 10;
 
-export function PromptGallery() {
-  const [prompts, setPrompts] = useState<Prompt[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface PromptGalleryProps {
+  initialPrompts: Prompt[];
+}
+
+export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
+  const [prompts, setPrompts] = useState<Prompt[]>(initialPrompts);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(initialPrompts.length === 0 ? "Could not load initial prompts." : null);
   const { favorites, isLoaded } = useFavorites();
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCounts, setVisibleCounts] = useState({
@@ -30,41 +34,26 @@ export function PromptGallery() {
   });
   const [activeTab, setActiveTab] = useState('all');
 
-  const fetchData = useCallback(async () => {
+  const refreshData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(API_URL);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const refreshedPrompts = await fetchPrompts();
+      setPrompts(refreshedPrompts);
+      if (refreshedPrompts.length === 0) {
+        setError("Failed to refresh prompts. The API might be down.");
       }
-      const data: Omit<Prompt, 'id'>[] = await response.json();
-      const validCategories = ["New", "Trending"];
-      const processedData = data
-        .filter(p => p.prompt && p.image_url && (validCategories.includes(p.category) || !p.category))
-        .map((p, index) => ({ 
-          ...p, 
-          id: index + 1, // Oldest prompt gets ID 1
-          category: p.category || 'New' 
-        }));
-      setPrompts(processedData.slice().reverse()); // Show newest first
-    } catch (e: any) {
-      setError(e.message || "Failed to fetch prompts.");
-      console.error(e);
+    } catch (e) {
+      setError("Failed to refresh prompts.");
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
   const filteredPrompts = useMemo(() => {
     if (!searchQuery) {
       return prompts;
     }
-    // Search for the exact ID
     return prompts.filter(p => p.id.toString() === searchQuery);
   }, [prompts, searchQuery]);
 
@@ -84,7 +73,7 @@ export function PromptGallery() {
   };
 
   const renderGrid = (items: Prompt[], category: keyof typeof visibleCounts, noResultsMessage: string = "No prompts found.") => {
-    if (items.length === 0) {
+    if (items.length === 0 && !isLoading) {
         return (
             <div className="text-center py-12">
                 <Search className="mx-auto h-12 w-12 text-muted-foreground" />
@@ -100,8 +89,9 @@ export function PromptGallery() {
           {visibleItems.map(prompt => (
             <PromptCard key={prompt.id} prompt={prompt} />
           ))}
+          {isLoading && Array.from({ length: 2 }).map((_, i) => <PromptCardSkeleton key={`loading-${i}`} />)}
         </div>
-        {visibleItems.length < items.length && !searchQuery && (
+        {visibleItems.length < items.length && !searchQuery && !isLoading && (
           <div className="flex justify-center">
             <Button onClick={() => handleLoadMore(category)}>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -134,36 +124,36 @@ export function PromptGallery() {
                     className="pl-9"
                 />
             </div>
-            <Button variant="outline" size="icon" onClick={fetchData} disabled={isLoading}>
+            <Button variant="outline" size="icon" onClick={refreshData} disabled={isLoading}>
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
               <span className="sr-only">Refresh</span>
             </Button>
         </div>
       </div>
 
-      {error && (
+      {error && !isLoading && (
         <Alert variant="destructive">
           <Terminal className="h-4 w-4" />
-          <AlertTitle>Error Fetching Prompts</AlertTitle>
+          <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-        <TabsList className="grid w-full grid-cols-4 max-w-md">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="new">New</TabsTrigger>
           <TabsTrigger value="trending">Trending</TabsTrigger>
           <TabsTrigger value="favorites">Favorites</TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="mt-6">
-          {isLoading ? renderSkeleton() : renderGrid(filteredPrompts, 'all')}
+          {renderGrid(filteredPrompts, 'all')}
         </TabsContent>
         <TabsContent value="new" className="mt-6">
-          {isLoading ? renderSkeleton() : renderGrid(newPrompts, 'new')}
+          {renderGrid(newPrompts, 'new')}
         </TabsContent>
         <TabsContent value="trending" className="mt-6">
-          {isLoading ? renderSkeleton() : renderGrid(trendingPrompts, 'trending')}
+          {renderGrid(trendingPrompts, 'trending')}
         </TabsContent>
         <TabsContent value="favorites" className="mt-6">
           {!isLoaded ? (
