@@ -120,7 +120,10 @@ export default function PromptDetailClient() {
         </CardContent>
       </Card>
       
-      <div className="flex items-center justify-center p-6 bg-card rounded-lg min-h-[80px]">
+      <div className={cn(
+          "flex items-center justify-center p-4 bg-card rounded-lg",
+          !isRevealed && "min-h-[80px]"
+        )}>
         {!isRevealed && !isGenerating && (
           <Button size="lg" onClick={() => setIsGenerating(true)}>
             <Wand2 className="mr-2 h-5 w-5" />
@@ -129,7 +132,7 @@ export default function PromptDetailClient() {
         )}
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-3">
             <p className="text-sm font-mono p-4 border rounded-md bg-muted/50 text-foreground">
               {animatedPrompt}
               {isTyping && <BlinkingCursor />}
