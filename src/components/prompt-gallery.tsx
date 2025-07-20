@@ -96,7 +96,7 @@ export function PromptGallery() {
     const visibleItems = items.slice(0, visibleCounts[category]);
     return (
       <div className="space-y-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
+        <div className="grid grid-cols-2 gap-2">
           {visibleItems.map(prompt => (
             <PromptCard key={prompt.id} prompt={prompt} />
           ))}
@@ -114,7 +114,7 @@ export function PromptGallery() {
   };
 
   const renderSkeleton = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
+    <div className="grid grid-cols-2 gap-2">
       {Array.from({ length: 8 }).map((_, i) => (
         <PromptCardSkeleton key={i} />
       ))}
@@ -123,9 +123,9 @@ export function PromptGallery() {
   
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row justify-end items-center gap-4">
-         <div className="flex items-center gap-2 w-full sm:w-auto">
-            <div className="relative w-full sm:w-64">
+      <div className="flex flex-col justify-end items-center gap-4">
+         <div className="flex items-center gap-2 w-full">
+            <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                     placeholder="Search by ID..."

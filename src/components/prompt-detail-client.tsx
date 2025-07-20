@@ -87,7 +87,7 @@ export default function PromptDetailClient() {
   
   if (!prompt) {
     return (
-      <div className="container mx-auto px-2 py-8 md:px-4 text-center">
+      <div className="container mx-auto px-2 py-8 text-center">
         <p className="text-destructive">Could not load prompt details. The link may be invalid.</p>
         <Button onClick={() => router.push('/')} className="mt-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -98,7 +98,7 @@ export default function PromptDetailClient() {
   }
 
   return (
-    <div className="container mx-auto px-2 py-8 md:px-4 max-w-4xl space-y-8">
+    <div className="container mx-auto px-2 py-8 max-w-4xl space-y-8">
       <Button variant="outline" onClick={() => router.back()}>
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
@@ -129,13 +129,13 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full space-y-4">
-            <p className="text-sm md:text-base font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
+            <p className="text-sm font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
               {animatedPrompt}
               {isTyping && <BlinkingCursor />}
             </p>
             {!isTyping && (
-              <div className="flex flex-wrap gap-2">
-                <Button size="lg" onClick={handleCopy} disabled={isCopied} className="flex-grow sm:flex-grow-0">
+              <div className="flex flex-col gap-2">
+                <Button size="lg" onClick={handleCopy} disabled={isCopied}>
                     {isCopied ? (
                         <Check className="mr-2 h-5 w-5" />
                     ) : (
@@ -143,7 +143,7 @@ export default function PromptDetailClient() {
                     )}
                     {isCopied ? 'Copied!' : 'Copy Prompt'}
                 </Button>
-                <Button size="lg" variant="outline" onClick={() => toggleFavorite(prompt)} className="flex-grow sm:flex-grow-0">
+                <Button size="lg" variant="outline" onClick={() => toggleFavorite(prompt)}>
                   <Heart className={cn("mr-2 h-5 w-5", isFav && "fill-red-500 text-red-500")} />
                   {isFav ? 'Favorited' : 'Favorite'}
                 </Button>

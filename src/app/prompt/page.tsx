@@ -18,7 +18,7 @@ export default function PromptDetailPage() {
 
 function PromptDetailSkeleton() {
   return (
-    <div className="container mx-auto px-2 py-8 md:px-4 max-w-4xl space-y-8">
+    <div className="container mx-auto px-2 py-8 max-w-4xl space-y-8">
       <Skeleton className="h-10 w-24" />
       <Skeleton className="relative aspect-video w-full rounded-lg" />
       <div className="flex justify-center p-6">

@@ -29,24 +29,24 @@ export default function BlogPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-4 sm:py-8">
+      <main className="flex-1 container mx-auto px-4 py-4">
         <div className="max-w-3xl mx-auto">
           <Link href="/" passHref>
-            <Button variant="outline" className="mb-4 sm:mb-8">
+            <Button variant="outline" className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Button>
           </Link>
-          <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-8 text-center">PromptPix Blog</h1>
-          <p className="text-xs sm:text-base text-center text-muted-foreground mb-6 sm:mb-12">
+          <h1 className="text-2xl font-bold mb-4 text-center">PromptPix Blog</h1>
+          <p className="text-xs text-center text-muted-foreground mb-6">
             Tutorials, guides, and insights into the world of AI art and prompt engineering.
           </p>
-          <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-4">
             {blogPosts.map((post) => (
               <Card key={post.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader className="p-4">
-                  <CardTitle className="text-base sm:text-xl">{post.title}</CardTitle>
-                  <CardDescription className="pt-1 text-xs sm:text-sm">{post.description}</CardDescription>
+                  <CardTitle className="text-base">{post.title}</CardTitle>
+                  <CardDescription className="pt-1 text-xs">{post.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
                   <Button asChild variant="outline" size="sm">
