@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -77,11 +78,11 @@ export default function PromptDetailClient() {
   const handleCopy = () => {
     if (!prompt?.prompt) return;
     navigator.clipboard.writeText(prompt.prompt);
-    setIsCopied(true);
     toast({
         title: "Copied to clipboard!",
         description: "You can now use the prompt.",
     });
+    setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   };
   
@@ -128,8 +129,8 @@ export default function PromptDetailClient() {
         )}
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
-          <div className="w-full space-y-4">
-            <p className="text-sm font-mono p-4 border rounded-md bg-muted/50 text-foreground min-h-[6rem]">
+          <div className="w-full space-y-2">
+            <p className="text-sm font-mono p-4 border rounded-md bg-muted/50 text-foreground">
               {animatedPrompt}
               {isTyping && <BlinkingCursor />}
             </p>
