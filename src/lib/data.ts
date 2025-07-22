@@ -5,7 +5,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzz476jq3qOdi4TdjeEg4-b
 // This function can now be called from the server or client
 export async function fetchPrompts(): Promise<Prompt[]> {
   try {
-    const response = await fetch(API_URL, { next: { revalidate: 3600 } }); // Revalidate every hour
+    const response = await fetch(API_URL, { next: { revalidate: 60 } }); // Revalidate every minute
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
