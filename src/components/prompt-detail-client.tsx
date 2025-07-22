@@ -134,7 +134,7 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full">
-             <ScrollArea className="w-full max-h-32 rounded-md border bg-muted/50">
+             <ScrollArea className="w-full h-32 rounded-md border bg-muted/50">
                 <p className="text-sm font-mono p-4 text-foreground">
                     {animatedPrompt}
                     {isTyping && <BlinkingCursor />}
