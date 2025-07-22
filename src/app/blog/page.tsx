@@ -29,7 +29,7 @@ export default function BlogPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-4">
+      <main className="flex-1 container mx-auto px-4 py-4 pb-20">
         <div className="max-w-3xl mx-auto">
           <Link href="/" passHref>
             <Button variant="outline" className="mb-4">

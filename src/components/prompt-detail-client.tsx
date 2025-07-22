@@ -138,8 +138,8 @@ export default function PromptDetailClient() {
               {isTyping && <BlinkingCursor />}
             </p>
             {!isTyping && (
-              <div className="flex flex-col gap-2 mt-3">
-                <Button size="lg" onClick={handleCopy} disabled={isCopied}>
+              <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                <Button size="lg" onClick={handleCopy} disabled={isCopied} className="flex-1">
                     {isCopied ? (
                         <Check className="mr-2 h-5 w-5" />
                     ) : (
@@ -147,7 +147,7 @@ export default function PromptDetailClient() {
                     )}
                     {isCopied ? 'Copied!' : 'Copy Prompt'}
                 </Button>
-                <Button size="lg" variant="outline" onClick={() => toggleFavorite(prompt)}>
+                <Button size="lg" variant="outline" onClick={() => toggleFavorite(prompt)} className="flex-1">
                   <Heart className={cn("mr-2 h-5 w-5", isFav && "fill-red-500 text-red-500")} />
                   {isFav ? 'Favorited' : 'Favorite'}
                 </Button>

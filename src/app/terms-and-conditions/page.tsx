@@ -7,7 +7,7 @@ export default function TermsAndConditionsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-8 pb-20">
         <div className="max-w-2xl mx-auto">
           <Link href="/" passHref>
             <Button variant="outline" className="mb-8">
