@@ -35,6 +35,7 @@ export default function PromptDetailClient() {
   const [isCopied, setIsCopied] = useState(false);
   const [animatedPrompt, setAnimatedPrompt] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const prompt: Prompt | null = useMemo(() => {
     const data = searchParams.get('data');
@@ -75,6 +76,11 @@ export default function PromptDetailClient() {
     }
   }, [isTyping, animatedPrompt, prompt?.prompt]);
 
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+    }
+  }, [animatedPrompt]);
 
   const handleCopy = () => {
     if (!prompt?.prompt) return;
@@ -134,7 +140,7 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full">
-             <ScrollArea className="w-full h-32 rounded-md border bg-muted/50">
+             <ScrollArea className="w-full h-32 rounded-md border bg-muted/50" viewportRef={scrollAreaRef}>
                 <p className="text-sm font-mono p-4 text-foreground">
                     {animatedPrompt}
                     {isTyping && <BlinkingCursor />}
