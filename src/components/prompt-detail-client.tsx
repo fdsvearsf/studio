@@ -11,6 +11,7 @@ import { Wand2, Copy, Check, ArrowLeft, Loader2, Heart } from 'lucide-react';
 import type { Prompt } from '@/types';
 import { useFavorites } from '@/hooks/use-favorites';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const TypingIndicator = () => (
     <div className="flex items-center gap-2 text-muted-foreground">
@@ -133,10 +134,16 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full">
-            <p className="text-sm font-mono p-4 border rounded-md bg-muted/50 text-foreground">
-              {animatedPrompt}
-              {isTyping && <BlinkingCursor />}
-            </p>
+             <ScrollArea className={cn(
+                "w-full rounded-md border bg-muted/50",
+                !isTyping ? "h-32" : "h-auto"
+              )}>
+                <p className="text-sm font-mono p-4 text-foreground">
+                    {animatedPrompt}
+                    {isTyping && <BlinkingCursor />}
+                </p>
+             </ScrollArea>
+
             {!isTyping && (
               <div className="flex flex-col sm:flex-row gap-2 mt-3">
                 <Button size="lg" onClick={handleCopy} disabled={isCopied} className="flex-1">
