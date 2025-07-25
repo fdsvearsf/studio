@@ -59,6 +59,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
     return prompts.filter(p => p.id.toString() === searchQuery);
   }, [prompts, searchQuery]);
 
+  const allPrompts = useMemo(() => filteredPrompts.filter(p => p.category !== 'DP Maker'), [filteredPrompts]);
   const newPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'New'), [filteredPrompts]);
   const trendingPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'Trending'), [filteredPrompts]);
   const dpMakerPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'DP Maker'), [filteredPrompts]);
@@ -153,7 +154,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
           </TabsList>
         </div>
         <TabsContent value="all" className="mt-6">
-          {renderGrid(filteredPrompts, 'all')}
+          {renderGrid(allPrompts, 'all')}
         </TabsContent>
         <TabsContent value="new" className="mt-6">
           {renderGrid(newPrompts, 'new')}
