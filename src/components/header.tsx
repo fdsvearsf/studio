@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
+import { Button } from './ui/button';
+import { Search } from 'lucide-react';
 
 export function Header() {
   return (
@@ -11,6 +13,12 @@ export function Header() {
           <h1 className="text-lg font-bold">PromptPix</h1>
         </Link>
         <div className="flex items-center gap-2">
+          <Link href="/search">
+             <Button variant="outline" size="icon">
+                <Search className="h-[1.2rem] w-[1.2rem]" />
+                <span className="sr-only">Search</span>
+              </Button>
+          </Link>
           <ThemeToggle />
         </div>
       </div>
