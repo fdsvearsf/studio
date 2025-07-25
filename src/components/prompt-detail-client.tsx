@@ -6,7 +6,6 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
 import { Wand2, Copy, Check, ArrowLeft, Loader2, Heart } from 'lucide-react';
 import type { Prompt } from '@/types';
 import { useFavorites } from '@/hooks/use-favorites';
@@ -28,7 +27,6 @@ const BlinkingCursor = () => (
 export default function PromptDetailClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { toast } = useToast();
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -85,10 +83,6 @@ export default function PromptDetailClient() {
   const handleCopy = () => {
     if (!prompt?.prompt) return;
     navigator.clipboard.writeText(prompt.prompt);
-    toast({
-        title: "Copied to clipboard!",
-        description: "You can now use the prompt.",
-    });
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   };
