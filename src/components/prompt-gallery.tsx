@@ -108,7 +108,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   );
   
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {error && !isLoading && (
         <Alert variant="destructive">
           <Terminal className="h-4 w-4" />
@@ -118,7 +118,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
       )}
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-2">
           <div className="flex-1 w-full overflow-x-auto pb-2">
              <TabsList className="min-w-full justify-start sm:min-w-0 bg-transparent p-0 gap-2">
               <TabsTrigger value="all">All</TabsTrigger>
@@ -134,22 +134,22 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
               <span className="sr-only">Refresh</span>
           </Button>
         </div>
-        <TabsContent value="all" className="mt-6">
+        <TabsContent value="all" className="mt-4">
           {renderGrid(allPrompts, 'all')}
         </TabsContent>
-        <TabsContent value="new" className="mt-6">
+        <TabsContent value="new" className="mt-4">
           {renderGrid(newPrompts, 'new')}
         </TabsContent>
-        <TabsContent value="trending" className="mt-6">
+        <TabsContent value="trending" className="mt-4">
           {renderGrid(trendingPrompts, 'trending')}
         </TabsContent>
-        <TabsContent value="dpMaker" className="mt-6">
+        <TabsContent value="dpMaker" className="mt-4">
           {renderGrid(dpMakerPrompts, 'dpMaker', 'No DP Maker prompts found.')}
         </TabsContent>
-        <TabsContent value="stickerMaker" className="mt-6">
+        <TabsContent value="stickerMaker" className="mt-4">
           {renderGrid(stickerMakerPrompts, 'stickerMaker', 'No Sticker Maker prompts found.')}
         </TabsContent>
-        <TabsContent value="favorites" className="mt-6">
+        <TabsContent value="favorites" className="mt-4">
           {!isLoaded ? (
             renderSkeleton()
           ) : favorites.length > 0 ? (
