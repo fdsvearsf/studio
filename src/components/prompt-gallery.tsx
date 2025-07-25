@@ -108,7 +108,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   );
   
   return (
-    <div className="space-y-2">
+    <div>
       {error && !isLoading && (
         <Alert variant="destructive">
           <Terminal className="h-4 w-4" />
@@ -119,7 +119,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
         <div className="flex items-center justify-between gap-2">
-          <div className="flex-1 w-full overflow-x-auto pb-2">
+          <div className="flex-1 w-full overflow-x-auto">
              <TabsList className="min-w-full justify-start sm:min-w-0 bg-transparent p-0 gap-2">
               <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value="new">New</TabsTrigger>
