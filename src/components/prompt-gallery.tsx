@@ -11,7 +11,6 @@ import { RefreshCw, Heart, Loader2, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
-import { Input } from '@/components/ui/input';
 import { fetchPrompts } from '@/lib/data';
 
 const INITIAL_LOAD_COUNT = 10;
@@ -26,7 +25,6 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(initialPrompts.length === 0 ? "Could not load initial prompts." : null);
   const { favorites, isLoaded } = useFavorites();
-  const [searchQuery, setSearchQuery] = useState('');
   const [visibleCounts, setVisibleCounts] = useState({
     all: INITIAL_LOAD_COUNT,
     new: INITIAL_LOAD_COUNT,
@@ -53,18 +51,11 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
     }
   }, []);
 
-  const filteredPrompts = useMemo(() => {
-    if (!searchQuery) {
-      return prompts;
-    }
-    return prompts.filter(p => p.id.toString() === searchQuery);
-  }, [prompts, searchQuery]);
-
-  const allPrompts = useMemo(() => filteredPrompts.filter(p => p.category !== 'DP Maker' && p.category !== 'Sticker Maker'), [filteredPrompts]);
-  const newPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'New'), [filteredPrompts]);
-  const trendingPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'Trending'), [filteredPrompts]);
-  const dpMakerPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'DP Maker'), [filteredPrompts]);
-  const stickerMakerPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'Sticker Maker'), [filteredPrompts]);
+  const allPrompts = useMemo(() => prompts.filter(p => p.category !== 'DP Maker' && p.category !== 'Sticker Maker'), [prompts]);
+  const newPrompts = useMemo(() => prompts.filter(p => p.category === 'New'), [prompts]);
+  const trendingPrompts = useMemo(() => prompts.filter(p => p.category === 'Trending'), [prompts]);
+  const dpMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'DP Maker'), [prompts]);
+  const stickerMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'Sticker Maker'), [prompts]);
   const favoritePrompts = useMemo(() => {
     const favIds = new Set(favorites.map(f => f.id));
     return prompts.filter(p => favIds.has(p.id)).slice().reverse();
@@ -84,7 +75,6 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
             <div className="text-center py-12">
                 <Search className="mx-auto h-12 w-12 text-muted-foreground" />
                 <h3 className="mt-4 text-lg font-semibold">{noResultsMessage}</h3>
-                {searchQuery && <p className="mt-1 text-sm text-muted-foreground">Try a different search ID.</p>}
             </div>
         );
     }
@@ -97,7 +87,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
           ))}
           {isLoading && Array.from({ length: 2 }).map((_, i) => <PromptCardSkeleton key={`loading-${i}`} />)}
         </div>
-        {visibleItems.length < items.length && !searchQuery && !isLoading && (
+        {visibleItems.length < items.length && !isLoading && (
           <div className="flex justify-center">
             <Button onClick={() => handleLoadMore(category)}>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -119,22 +109,11 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   
   return (
     <div className="space-y-4">
-      <div className="flex flex-col justify-end items-center gap-4">
-         <div className="flex items-center gap-2 w-full">
-            <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                    placeholder="Search by ID..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9"
-                />
-            </div>
-            <Button variant="outline" size="icon" onClick={refreshData} disabled={isLoading}>
-              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              <span className="sr-only">Refresh</span>
-            </Button>
-        </div>
+      <div className="flex justify-end items-center">
+        <Button variant="outline" size="icon" onClick={refreshData} disabled={isLoading}>
+            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <span className="sr-only">Refresh</span>
+        </Button>
       </div>
 
       {error && !isLoading && (
