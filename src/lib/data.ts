@@ -10,7 +10,7 @@ export async function fetchPrompts(): Promise<Prompt[]> {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: Omit<Prompt, 'id'>[] = await response.json();
-    const validCategories = ["New", "Trending"];
+    const validCategories = ["New", "Trending", "DP Maker"];
     const processedData = data
       .filter(p => p.prompt && p.image_url && (validCategories.includes(p.category) || !p.category))
       .map((p, index) => ({ 

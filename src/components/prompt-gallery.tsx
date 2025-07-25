@@ -30,6 +30,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
     all: INITIAL_LOAD_COUNT,
     new: INITIAL_LOAD_COUNT,
     trending: INITIAL_LOAD_COUNT,
+    dpMaker: INITIAL_LOAD_COUNT,
     favorites: INITIAL_LOAD_COUNT,
   });
   const [activeTab, setActiveTab] = useState('all');
@@ -59,6 +60,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
 
   const newPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'New'), [filteredPrompts]);
   const trendingPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'Trending'), [filteredPrompts]);
+  const dpMakerPrompts = useMemo(() => filteredPrompts.filter(p => p.category === 'DP Maker'), [filteredPrompts]);
   const favoritePrompts = useMemo(() => {
     const favIds = new Set(favorites.map(f => f.id));
     return prompts.filter(p => favIds.has(p.id)).slice().reverse();
@@ -140,10 +142,11 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
       )}
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="new">New</TabsTrigger>
           <TabsTrigger value="trending">Trending</TabsTrigger>
+          <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
           <TabsTrigger value="favorites">Favorites</TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="mt-6">
@@ -154,6 +157,9 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
         </TabsContent>
         <TabsContent value="trending" className="mt-6">
           {renderGrid(trendingPrompts, 'trending')}
+        </TabsContent>
+        <TabsContent value="dpMaker" className="mt-6">
+          {renderGrid(dpMakerPrompts, 'dpMaker', 'No DP Maker prompts found.')}
         </TabsContent>
         <TabsContent value="favorites" className="mt-6">
           {!isLoaded ? (
