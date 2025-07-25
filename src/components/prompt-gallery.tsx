@@ -147,7 +147,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
         <div className="w-full overflow-x-auto pb-2">
-          <TabsList className="min-w-full justify-start sm:min-w-0 sm:grid sm:w-full sm:grid-cols-6">
+           <TabsList className="min-w-full justify-start sm:min-w-0 bg-transparent p-0 gap-2">
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="new">New</TabsTrigger>
             <TabsTrigger value="trending">Trending</TabsTrigger>
