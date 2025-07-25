@@ -109,13 +109,6 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   
   return (
     <div className="space-y-4">
-      <div className="flex justify-end items-center">
-        <Button variant="outline" size="icon" onClick={refreshData} disabled={isLoading}>
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            <span className="sr-only">Refresh</span>
-        </Button>
-      </div>
-
       {error && !isLoading && (
         <Alert variant="destructive">
           <Terminal className="h-4 w-4" />
@@ -125,15 +118,21 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
       )}
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-        <div className="w-full overflow-x-auto pb-2">
-           <TabsList className="min-w-full justify-start sm:min-w-0 bg-transparent p-0 gap-2">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="new">New</TabsTrigger>
-            <TabsTrigger value="trending">Trending</TabsTrigger>
-            <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
-            <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
-            <TabsTrigger value="favorites">Favorites</TabsTrigger>
-          </TabsList>
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex-1 w-full overflow-x-auto pb-2">
+             <TabsList className="min-w-full justify-start sm:min-w-0 bg-transparent p-0 gap-2">
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="new">New</TabsTrigger>
+              <TabsTrigger value="trending">Trending</TabsTrigger>
+              <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
+              <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
+              <TabsTrigger value="favorites">Favorites</TabsTrigger>
+            </TabsList>
+          </div>
+          <Button variant="outline" size="icon" onClick={refreshData} disabled={isLoading} className="shrink-0">
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+              <span className="sr-only">Refresh</span>
+          </Button>
         </div>
         <TabsContent value="all" className="mt-6">
           {renderGrid(allPrompts, 'all')}
