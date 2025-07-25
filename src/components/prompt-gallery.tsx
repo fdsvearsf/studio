@@ -118,7 +118,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
       )}
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between">
           <div className="flex-1 w-full overflow-x-auto">
              <TabsList className="min-w-full justify-start sm:min-w-0 bg-transparent p-0 gap-2">
               <TabsTrigger value="all">All</TabsTrigger>
