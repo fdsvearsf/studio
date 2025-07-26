@@ -122,11 +122,11 @@ export default function PromptDetailClient() {
       </Card>
       
       <div className={cn(
-          "flex items-center justify-center p-4 bg-card rounded-lg",
-          !isRevealed && "min-h-[80px]"
+          "flex items-center justify-center p-6 bg-card rounded-lg",
+          !isRevealed && "min-h-[96px]"
         )}>
         {!isRevealed && !isGenerating && (
-          <Button size="lg" onClick={() => setIsGenerating(true)} className="w-full max-w-xs">
+          <Button size="lg" onClick={() => setIsGenerating(true)} className="w-full max-w-xs text-base py-6">
             <Wand2 className="mr-2 h-5 w-5" />
             Generate Prompt
           </Button>
@@ -134,7 +134,7 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full">
-             <ScrollArea className="w-full h-32 rounded-md border bg-background" viewportRef={scrollAreaRef}>
+             <ScrollArea className="w-full h-32 rounded-md border bg-background/50" viewportRef={scrollAreaRef}>
                 <p className="text-sm font-mono p-4 text-foreground/90">
                     {animatedPrompt}
                     {isTyping && <BlinkingCursor />}
