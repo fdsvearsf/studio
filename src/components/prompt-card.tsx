@@ -16,6 +16,7 @@ interface PromptCardProps {
 
 export function PromptCard({ prompt }: PromptCardProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const isFav = isFavorite(prompt.id);
   
@@ -28,7 +29,11 @@ export function PromptCard({ prompt }: PromptCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 group">
+    <Card className={cn(
+      "overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 group",
+      "opacity-0 animate-fade-in-up",
+      isImageLoaded ? "opacity-100" : "opacity-0"
+    )}>
       <Link href={`/prompt?data=${encodedPrompt}`} className="block">
         <CardContent className="p-0">
           <div className="aspect-square relative bg-muted flex items-center justify-center">
@@ -56,7 +61,10 @@ export function PromptCard({ prompt }: PromptCardProps) {
               )}
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               data-ai-hint="abstract art"
-              onLoad={() => setIsLoading(false)}
+              onLoad={() => {
+                setIsLoading(false);
+                setIsImageLoaded(true);
+              }}
             />
           </div>
         </CardContent>
