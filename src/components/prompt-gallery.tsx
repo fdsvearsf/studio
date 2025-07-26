@@ -73,7 +73,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
         </div>
         {visibleItems.length < items.length && !isLoading && (
           <div className="flex justify-center">
-            <Button onClick={() => handleLoadMore(category)} variant="outline" className="w-full">
+            <Button onClick={() => handleLoadMore(category)} variant="secondary" className="w-full">
               Load More
             </Button>
           </div>
