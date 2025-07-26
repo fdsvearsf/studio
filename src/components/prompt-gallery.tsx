@@ -7,12 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PromptCard } from '@/components/prompt-card';
 import { PromptCardSkeleton } from '@/components/prompt-card-skeleton';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Heart, Loader2, Search } from 'lucide-react';
+import { Heart, Loader2, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
 import { fetchPrompts } from '@/lib/data';
-import { cn } from '@/lib/utils';
 
 const INITIAL_LOAD_COUNT = 10;
 const LOAD_MORE_COUNT = 10;
@@ -35,22 +34,6 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
     favorites: INITIAL_LOAD_COUNT,
   });
   const [activeTab, setActiveTab] = useState('all');
-
-  const refreshData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const refreshedPrompts = await fetchPrompts();
-      setPrompts(refreshedPrompts);
-      if (refreshedPrompts.length === 0) {
-        setError("Failed to refresh prompts. The API might be down.");
-      }
-    } catch (e) {
-      setError("Failed to refresh prompts.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
 
   const allPrompts = useMemo(() => prompts.filter(p => p.category !== 'DP Maker' && p.category !== 'Sticker Maker'), [prompts]);
   const newPrompts = useMemo(() => prompts.filter(p => p.category === 'New'), [prompts]);
@@ -109,7 +92,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   );
   
   return (
-    <div className="py-2">
+    <div>
       {error && !isLoading && (
         <Alert variant="destructive" className="mb-4">
           <Terminal className="h-4 w-4" />
@@ -119,19 +102,21 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
       )}
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-         <div className="relative w-full overflow-hidden">
-            <div className="overflow-x-auto no-scrollbar">
-                <TabsList className="min-w-max justify-start bg-transparent p-0 gap-1">
-                    <TabsTrigger value="all">All</TabsTrigger>
-                    <TabsTrigger value="new">New</TabsTrigger>
-                    <TabsTrigger value="trending">Trending</TabsTrigger>
-                    <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
-                    <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
-                    <TabsTrigger value="favorites">Favorites</TabsTrigger>
-                </TabsList>
+         <div className="sticky top-0 z-10 bg-background py-2">
+            <div className="relative w-full overflow-hidden">
+                <div className="overflow-x-auto no-scrollbar">
+                    <TabsList className="min-w-max justify-start bg-transparent p-0 gap-1">
+                        <TabsTrigger value="all">All</TabsTrigger>
+                        <TabsTrigger value="new">New</TabsTrigger>
+                        <TabsTrigger value="trending">Trending</TabsTrigger>
+                        <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
+                        <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
+                        <TabsTrigger value="favorites">Favorites</TabsTrigger>
+                    </TabsList>
+                </div>
+                <div className="absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
             </div>
-            <div className="absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
-        </div>
+         </div>
         <TabsContent value="all" className="mt-4">
           {renderGrid(allPrompts, 'all')}
         </TabsContent>

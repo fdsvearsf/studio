@@ -1,4 +1,3 @@
-import { Header } from '@/components/header';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search as SearchIcon } from 'lucide-react';
@@ -6,7 +5,6 @@ import { Search as SearchIcon } from 'lucide-react';
 export default function SearchPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
       <main className="flex-1 container mx-auto px-4 py-8 pb-20">
         <div className="max-w-2xl mx-auto">
           <h1 className="text-3xl font-bold mb-4">Search Prompts</h1>

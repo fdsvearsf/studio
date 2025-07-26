@@ -1,12 +1,10 @@
 import { Suspense } from 'react';
 import PromptDetailClient from '@/components/prompt-detail-client';
-import { Header } from '@/components/header';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function PromptDetailPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
       <main className="flex-1 pb-20">
         <Suspense fallback={<PromptDetailSkeleton />}>
           <PromptDetailClient />
