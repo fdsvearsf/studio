@@ -6,7 +6,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Wand2, Copy, Check, ArrowLeft, Heart } from 'lucide-react';
+import { Wand2, Copy, Check, ArrowLeft, Heart, Loader2 } from 'lucide-react';
 import type { Prompt } from '@/types';
 import { useFavorites } from '@/hooks/use-favorites';
 import { cn } from '@/lib/utils';
@@ -20,6 +20,7 @@ export default function PromptDetailClient() {
   const [isCopied, setIsCopied] = useState(false);
   const [displayedPrompt, setDisplayedPrompt] = useState('');
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const prompt: Prompt | null = useMemo(() => {
@@ -81,14 +82,24 @@ export default function PromptDetailClient() {
 
       <Card className="overflow-hidden shadow-lg">
         <CardContent className="p-0">
-          <div className="relative aspect-video w-full">
+          <div className="relative aspect-video w-full bg-secondary">
+             {isImageLoading && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            )}
             <Image
               src={prompt.image_url}
               alt={prompt.prompt.slice(0, 50)}
               fill
-              className="object-contain"
+              className={cn(
+                "object-contain transition-opacity duration-300",
+                isImageLoading ? "opacity-0" : "opacity-100"
+              )}
               sizes="100vw"
               data-ai-hint="futuristic design"
+              onLoad={() => setIsImageLoading(false)}
+              priority
             />
           </div>
         </CardContent>
