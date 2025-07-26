@@ -126,7 +126,7 @@ export default function PromptDetailClient() {
           !isRevealed && "min-h-[80px]"
         )}>
         {!isRevealed && !isGenerating && (
-          <Button size="lg" onClick={() => setIsGenerating(true)}>
+          <Button size="lg" onClick={() => setIsGenerating(true)} className="w-full max-w-xs">
             <Wand2 className="mr-2 h-5 w-5" />
             Generate Prompt
           </Button>
@@ -134,8 +134,8 @@ export default function PromptDetailClient() {
         {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full">
-             <ScrollArea className="w-full h-32 rounded-md border bg-muted/50" viewportRef={scrollAreaRef}>
-                <p className="text-sm font-mono p-4 text-foreground">
+             <ScrollArea className="w-full h-32 rounded-md border bg-background" viewportRef={scrollAreaRef}>
+                <p className="text-sm font-mono p-4 text-foreground/90">
                     {animatedPrompt}
                     {isTyping && <BlinkingCursor />}
                 </p>
@@ -143,7 +143,7 @@ export default function PromptDetailClient() {
 
             {!isTyping && (
                 <div className="flex items-center gap-2 mt-3">
-                    <Button size="lg" onClick={handleCopy} disabled={isCopied} className="flex-1">
+                    <Button onClick={handleCopy} disabled={isCopied} className="flex-1 text-base py-6">
                         {isCopied ? (
                             <Check className="mr-2 h-5 w-5" />
                         ) : (
@@ -151,8 +151,8 @@ export default function PromptDetailClient() {
                         )}
                         {isCopied ? 'Copied!' : 'Copy Prompt'}
                     </Button>
-                    <Button size="icon" variant="outline" onClick={() => toggleFavorite(prompt)} className="h-11 w-11">
-                      <Heart className={cn("h-5 w-5", isFav && "fill-red-500 text-red-500")} />
+                    <Button size="icon" variant="outline" onClick={() => toggleFavorite(prompt)} className="h-[52px] w-[52px]">
+                      <Heart className={cn("h-6 w-6", isFav && "fill-red-500 text-red-500")} />
                       <span className="sr-only">Favorite</span>
                     </Button>
                 </div>
