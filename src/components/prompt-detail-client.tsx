@@ -122,11 +122,11 @@ export default function PromptDetailClient() {
       </Card>
       
       <div className={cn(
-          "flex items-center justify-center p-6 bg-card rounded-lg",
+          "flex items-center justify-center p-6 bg-secondary/30 rounded-lg",
           !isRevealed && "min-h-[96px]"
         )}>
         {!isRevealed && !isGenerating && (
-          <Button size="lg" onClick={() => setIsGenerating(true)} className="w-full max-w-xs text-base py-6">
+          <Button variant="secondary" size="lg" onClick={() => setIsGenerating(true)} className="w-full max-w-xs text-base py-6">
             <Wand2 className="mr-2 h-5 w-5" />
             Generate Prompt
           </Button>
