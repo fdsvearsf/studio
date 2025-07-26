@@ -103,7 +103,7 @@ export default function PromptDetailClient() {
         )}
         {isRevealed && (
           <div className="w-full">
-             <ScrollArea className="w-full h-32 rounded-md border bg-background/50" viewportRef={scrollAreaRef}>
+             <ScrollArea className="w-full h-40 rounded-md border bg-background/50" viewportRef={scrollAreaRef}>
                 <p className="text-sm font-mono p-4 text-foreground/90">
                     {displayedPrompt}
                 </p>
