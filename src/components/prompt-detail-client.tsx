@@ -19,6 +19,7 @@ export default function PromptDetailClient() {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [displayedPrompt, setDisplayedPrompt] = useState('');
+  const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const prompt: Prompt | null = useMemo(() => {
@@ -44,8 +45,10 @@ export default function PromptDetailClient() {
           if (scrollAreaRef.current) {
             scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
           }
-        }, 50); 
+        }, 100); 
         return () => clearTimeout(timer);
+      } else {
+        setIsAnimationComplete(true);
       }
     }
   }, [isRevealed, displayedPrompt, prompt]);
@@ -103,26 +106,28 @@ export default function PromptDetailClient() {
         )}
         {isRevealed && (
           <div className="w-full">
-             <ScrollArea className="w-full h-40 rounded-md border bg-background/50" viewportRef={scrollAreaRef}>
+             <ScrollArea className="w-full h-48 rounded-md border bg-background/50" viewportRef={scrollAreaRef}>
                 <p className="text-sm font-mono p-4 text-foreground/90">
                     {displayedPrompt}
                 </p>
              </ScrollArea>
 
-            <div className="flex items-center gap-2 mt-3">
-                <Button variant="secondary" onClick={handleCopy} disabled={isCopied} className="flex-1 text-base py-6">
-                    {isCopied ? (
-                        <Check className="mr-2 h-5 w-5" />
-                    ) : (
-                        <Copy className="mr-2 h-5 w-5" />
-                    )}
-                    {isCopied ? 'Copied!' : 'Copy Prompt'}
-                </Button>
-                <Button size="icon" variant="outline" onClick={() => toggleFavorite(prompt)} className="h-[52px] w-[52px]">
-                  <Heart className={cn("h-6 w-6", isFav && "fill-red-500 text-red-500")} />
-                  <span className="sr-only">Favorite</span>
-                </Button>
-            </div>
+            {isAnimationComplete && (
+                <div className="flex items-center gap-2 mt-3">
+                    <Button variant="secondary" onClick={handleCopy} disabled={isCopied} className="flex-1 text-base py-6">
+                        {isCopied ? (
+                            <Check className="mr-2 h-5 w-5" />
+                        ) : (
+                            <Copy className="mr-2 h-5 w-5" />
+                        )}
+                        {isCopied ? 'Copied!' : 'Copy Prompt'}
+                    </Button>
+                    <Button size="icon" variant="outline" onClick={() => toggleFavorite(prompt)} className="h-[52px] w-[52px]">
+                      <Heart className={cn("h-6 w-6", isFav && "fill-red-500 text-red-500")} />
+                      <span className="sr-only">Favorite</span>
+                    </Button>
+                </div>
+            )}
           </div>
         )}
       </div>
