@@ -18,6 +18,7 @@ export default function PromptDetailClient() {
   
   const [isRevealed, setIsRevealed] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [displayedPrompt, setDisplayedPrompt] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const prompt: Prompt | null = useMemo(() => {
@@ -34,6 +35,20 @@ export default function PromptDetailClient() {
 
   const { isFavorite, toggleFavorite } = useFavorites();
   const isFav = prompt ? isFavorite(prompt.id) : false;
+
+  useEffect(() => {
+    if (isRevealed && prompt?.prompt) {
+      if (displayedPrompt.length < prompt.prompt.length) {
+        const timer = setTimeout(() => {
+          setDisplayedPrompt(prompt.prompt.slice(0, displayedPrompt.length + 1));
+          if (scrollAreaRef.current) {
+            scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+          }
+        }, 20); 
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isRevealed, displayedPrompt, prompt]);
 
   const handleCopy = () => {
     if (!prompt?.prompt) return;
@@ -90,7 +105,7 @@ export default function PromptDetailClient() {
           <div className="w-full">
              <ScrollArea className="w-full h-32 rounded-md border bg-background/50" viewportRef={scrollAreaRef}>
                 <p className="text-sm font-mono p-4 text-foreground/90">
-                    {prompt.prompt}
+                    {displayedPrompt}
                 </p>
              </ScrollArea>
 
