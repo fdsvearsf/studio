@@ -119,24 +119,18 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
       )}
 
       <Tabs defaultValue="all" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-         <div className="flex items-center justify-between gap-1 w-full">
-            <div className="relative flex-1 w-full overflow-hidden">
-                <div className="overflow-x-auto no-scrollbar">
-                    <TabsList className="min-w-max justify-start bg-transparent p-0 gap-1">
-                        <TabsTrigger value="all">All</TabsTrigger>
-                        <TabsTrigger value="new">New</TabsTrigger>
-                        <TabsTrigger value="trending">Trending</TabsTrigger>
-                        <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
-                        <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
-                        <TabsTrigger value="favorites">Favorites</TabsTrigger>
-                    </TabsList>
-                </div>
-                <div className="absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+         <div className="relative w-full overflow-hidden">
+            <div className="overflow-x-auto no-scrollbar">
+                <TabsList className="min-w-max justify-start bg-transparent p-0 gap-1">
+                    <TabsTrigger value="all">All</TabsTrigger>
+                    <TabsTrigger value="new">New</TabsTrigger>
+                    <TabsTrigger value="trending">Trending</TabsTrigger>
+                    <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
+                    <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
+                    <TabsTrigger value="favorites">Favorites</TabsTrigger>
+                </TabsList>
             </div>
-            <Button variant="outline" size="icon" onClick={refreshData} disabled={isLoading} className="shrink-0">
-                <RefreshCw className={cn('h-4 w-4', isLoading && 'animate-spin')} />
-                <span className="sr-only">Refresh</span>
-            </Button>
+            <div className="absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
         </div>
         <TabsContent value="all" className="mt-4">
           {renderGrid(allPrompts, 'all')}
