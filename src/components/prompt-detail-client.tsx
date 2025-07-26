@@ -6,33 +6,18 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Wand2, Copy, Check, ArrowLeft, Loader2, Heart } from 'lucide-react';
+import { Wand2, Copy, Check, ArrowLeft, Heart } from 'lucide-react';
 import type { Prompt } from '@/types';
 import { useFavorites } from '@/hooks/use-favorites';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const TypingIndicator = () => (
-    <div className="flex items-center gap-2 text-muted-foreground">
-        <Loader2 className="h-5 w-5 animate-spin" />
-        <span>Generating prompt... please wait.</span>
-    </div>
-);
-
-const BlinkingCursor = () => (
-    <span className="inline-block w-2 h-5 bg-foreground animate-pulse ml-1" />
-);
-
-
 export default function PromptDetailClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  const [isGenerating, setIsGenerating] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [animatedPrompt, setAnimatedPrompt] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const prompt: Prompt | null = useMemo(() => {
@@ -49,36 +34,6 @@ export default function PromptDetailClient() {
 
   const { isFavorite, toggleFavorite } = useFavorites();
   const isFav = prompt ? isFavorite(prompt.id) : false;
-
-  useEffect(() => {
-    if (isGenerating) {
-      const timer = setTimeout(() => {
-        setIsGenerating(false);
-        setIsRevealed(true);
-        setIsTyping(true);
-      }, 3000); // 3 second delay for "generation"
-      return () => clearTimeout(timer);
-    }
-  }, [isGenerating]);
-
-  useEffect(() => {
-    if (isTyping && prompt?.prompt) {
-      if (animatedPrompt.length < prompt.prompt.length) {
-        const timeoutId = setTimeout(() => {
-          setAnimatedPrompt(prompt.prompt.slice(0, animatedPrompt.length + 1));
-        }, 10); 
-        return () => clearTimeout(timeoutId);
-      } else {
-        setIsTyping(false);
-      }
-    }
-  }, [isTyping, animatedPrompt, prompt?.prompt]);
-
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
-    }
-  }, [animatedPrompt]);
 
   const handleCopy = () => {
     if (!prompt?.prompt) return;
@@ -125,38 +80,34 @@ export default function PromptDetailClient() {
           "flex items-center justify-center p-6 bg-secondary/30 rounded-lg",
           !isRevealed && "min-h-[96px]"
         )}>
-        {!isRevealed && !isGenerating && (
-          <Button variant="secondary" size="lg" onClick={() => setIsGenerating(true)} className="w-full max-w-xs text-base py-6">
+        {!isRevealed && (
+          <Button variant="secondary" size="lg" onClick={() => setIsRevealed(true)} className="w-full max-w-xs text-base py-6">
             <Wand2 className="mr-2 h-5 w-5" />
             Generate Prompt
           </Button>
         )}
-        {isGenerating && <TypingIndicator />}
         {isRevealed && (
           <div className="w-full">
              <ScrollArea className="w-full h-32 rounded-md border bg-background/50" viewportRef={scrollAreaRef}>
                 <p className="text-sm font-mono p-4 text-foreground/90">
-                    {animatedPrompt}
-                    {isTyping && <BlinkingCursor />}
+                    {prompt.prompt}
                 </p>
              </ScrollArea>
 
-            {!isTyping && (
-                <div className="flex items-center gap-2 mt-3">
-                    <Button variant="secondary" onClick={handleCopy} disabled={isCopied} className="flex-1 text-base py-6">
-                        {isCopied ? (
-                            <Check className="mr-2 h-5 w-5" />
-                        ) : (
-                            <Copy className="mr-2 h-5 w-5" />
-                        )}
-                        {isCopied ? 'Copied!' : 'Copy Prompt'}
-                    </Button>
-                    <Button size="icon" variant="outline" onClick={() => toggleFavorite(prompt)} className="h-[52px] w-[52px]">
-                      <Heart className={cn("h-6 w-6", isFav && "fill-red-500 text-red-500")} />
-                      <span className="sr-only">Favorite</span>
-                    </Button>
-                </div>
-            )}
+            <div className="flex items-center gap-2 mt-3">
+                <Button variant="secondary" onClick={handleCopy} disabled={isCopied} className="flex-1 text-base py-6">
+                    {isCopied ? (
+                        <Check className="mr-2 h-5 w-5" />
+                    ) : (
+                        <Copy className="mr-2 h-5 w-5" />
+                    )}
+                    {isCopied ? 'Copied!' : 'Copy Prompt'}
+                </Button>
+                <Button size="icon" variant="outline" onClick={() => toggleFavorite(prompt)} className="h-[52px] w-[52px]">
+                  <Heart className={cn("h-6 w-6", isFav && "fill-red-500 text-red-500")} />
+                  <span className="sr-only">Favorite</span>
+                </Button>
+            </div>
           </div>
         )}
       </div>
