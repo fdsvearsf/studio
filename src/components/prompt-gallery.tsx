@@ -14,7 +14,7 @@ import { useFavorites } from '@/hooks/use-favorites';
 import { fetchPrompts } from '@/lib/data';
 
 const INITIAL_LOAD_COUNT = 10;
-const LOAD_MORE_COUNT = 10;
+const LOAD_MORE_COUNT = 6;
 
 interface PromptGalleryProps {
   initialPrompts: Prompt[];
@@ -91,7 +91,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   );
   
   return (
-    <div>
+    <div className="py-2">
       {error && !isLoading && (
         <Alert variant="destructive" className="mb-4">
           <Terminal className="h-4 w-4" />
