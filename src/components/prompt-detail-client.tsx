@@ -143,7 +143,7 @@ export default function PromptDetailClient() {
 
             {!isTyping && (
                 <div className="flex items-center gap-2 mt-3">
-                    <Button onClick={handleCopy} disabled={isCopied} className="flex-1 text-base py-6">
+                    <Button variant="secondary" onClick={handleCopy} disabled={isCopied} className="flex-1 text-base py-6">
                         {isCopied ? (
                             <Check className="mr-2 h-5 w-5" />
                         ) : (
