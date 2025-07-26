@@ -44,7 +44,7 @@ export default function PromptDetailClient() {
           if (scrollAreaRef.current) {
             scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
           }
-        }, 20); 
+        }, 50); 
         return () => clearTimeout(timer);
       }
     }
