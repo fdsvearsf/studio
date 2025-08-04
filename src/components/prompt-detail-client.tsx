@@ -46,7 +46,7 @@ export default function PromptDetailClient() {
           if (scrollAreaRef.current) {
             scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
           }
-        }, 100); 
+        }, 10); 
         return () => clearTimeout(timer);
       } else {
         setIsAnimationComplete(true);
