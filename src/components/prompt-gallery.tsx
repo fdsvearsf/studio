@@ -47,9 +47,8 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   const stickerMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'Sticker Maker'), [prompts]);
   const gamesPrompts = useMemo(() => prompts.filter(p => p.category.toLowerCase() === 'games'), [prompts]);
   const favoritePrompts = useMemo(() => {
-    const favIds = new Set(favorites.map(f => f.id));
-    return prompts.filter(p => favIds.has(p.id)).slice().reverse();
-  }, [prompts, favorites]);
+    return favorites.slice().reverse();
+  }, [favorites]);
 
 
   const handleLoadMore = (category: keyof typeof visibleCounts) => {
