@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
+import { FavoritesProvider } from '@/hooks/use-favorites';
 
 export const metadata: Metadata = {
   title: 'PromptPix AI Photo Editing - Unlimited AI Image Generation Prompt',
@@ -31,7 +32,9 @@ export default function RootLayout({
             forcedTheme="dark"
             disableTransitionOnChange
         >
-          {children}
+          <FavoritesProvider>
+            {children}
+          </FavoritesProvider>
           <Toaster />
         </ThemeProvider>
       </body>
