@@ -36,7 +36,11 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   });
   const [activeTab, setActiveTab] = useState('all');
 
-  const allPrompts = useMemo(() => prompts, [prompts]);
+  const allPrompts = useMemo(() => {
+    const excludedCategories = ['dp maker', 'sticker maker', 'games'];
+    return prompts.filter(p => !excludedCategories.includes(p.category.toLowerCase()));
+  }, [prompts]);
+
   const newPrompts = useMemo(() => prompts.filter(p => p.category === 'New'), [prompts]);
   const trendingPrompts = useMemo(() => prompts.filter(p => p.category === 'Trending'), [prompts]);
   const dpMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'DP Maker'), [prompts]);
