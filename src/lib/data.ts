@@ -1,3 +1,4 @@
+
 import type { Prompt } from '@/types';
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzz476jq3qOdi4TdjeEg4-b_LaVi_68QXfkDZJ1m0DNUH-B2_UamzxUJLOJMg0DwTWEqw/exec";
@@ -10,7 +11,7 @@ export async function fetchPrompts(): Promise<Prompt[]> {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: Omit<Prompt, 'id'>[] = await response.json();
-    const validCategories = ["New", "Trending", "DP Maker", "Sticker Maker", "Games"];
+    const validCategories = ["New", "Trending", "DP Maker", "Sticker Maker", "Games", "games"];
     const processedData = data
       .filter(p => p.prompt && p.image_url && (validCategories.includes(p.category) || !p.category))
       .map((p, index) => ({ 
