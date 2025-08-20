@@ -31,6 +31,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
     trending: INITIAL_LOAD_COUNT,
     dpMaker: INITIAL_LOAD_COUNT,
     stickerMaker: INITIAL_LOAD_COUNT,
+    games: INITIAL_LOAD_COUNT,
     favorites: INITIAL_LOAD_COUNT,
   });
   const [activeTab, setActiveTab] = useState('all');
@@ -40,6 +41,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
   const trendingPrompts = useMemo(() => prompts.filter(p => p.category === 'Trending'), [prompts]);
   const dpMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'DP Maker'), [prompts]);
   const stickerMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'Sticker Maker'), [prompts]);
+  const gamesPrompts = useMemo(() => prompts.filter(p => p.category === 'Games'), [prompts]);
   const favoritePrompts = useMemo(() => {
     const favIds = new Set(favorites.map(f => f.id));
     return prompts.filter(p => favIds.has(p.id)).slice().reverse();
@@ -110,6 +112,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
                         <TabsTrigger value="trending">Trending</TabsTrigger>
                         <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
                         <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
+                        <TabsTrigger value="games">Games</TabsTrigger>
                         <TabsTrigger value="favorites">Favorites</TabsTrigger>
                     </TabsList>
                 </div>
@@ -130,6 +133,9 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
         </TabsContent>
         <TabsContent value="stickerMaker" className="mt-4">
           {renderGrid(stickerMakerPrompts, 'stickerMaker', 'No Sticker Maker prompts found.')}
+        </TabsContent>
+        <TabsContent value="games" className="mt-4">
+          {renderGrid(gamesPrompts, 'games', 'No Games prompts found.')}
         </TabsContent>
         <TabsContent value="favorites" className="mt-4">
           {!isLoaded ? (
