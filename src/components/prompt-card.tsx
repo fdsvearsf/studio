@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -7,7 +8,7 @@ import type { Prompt } from '@/types';
 import { useState } from 'react';
 import { Loader2, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useFavorites } from '@/hooks/use-favorites';
+import { useFavorites } from '@/hooks/use-favorites.tsx';
 import { Button } from './ui/button';
 
 interface PromptCardProps {
@@ -55,6 +56,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
               src={prompt.image_url}
               alt={prompt.prompt.slice(0, 50)}
               fill
+              quality={75}
               className={cn(
                 "object-cover transition-all duration-300 group-hover:scale-105",
                 isLoading ? "opacity-0 scale-95" : "opacity-100 scale-100"

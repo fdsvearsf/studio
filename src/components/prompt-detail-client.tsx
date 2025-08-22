@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Wand2, Copy, Check, ArrowLeft, Heart, Loader2 } from 'lucide-react';
 import type { Prompt } from '@/types';
-import { useFavorites } from '@/hooks/use-favorites';
+import { useFavorites } from '@/hooks/use-favorites.tsx';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -92,6 +92,7 @@ export default function PromptDetailClient() {
               src={prompt.image_url}
               alt={prompt.prompt.slice(0, 50)}
               fill
+              quality={75}
               className={cn(
                 "object-contain transition-opacity duration-300",
                 isImageLoading ? "opacity-0" : "opacity-100"
