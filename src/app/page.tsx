@@ -1,10 +1,7 @@
 
-"use client";
-
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { PromptGallery } from '@/components/prompt-gallery';
 import { fetchPrompts } from '@/lib/data';
-import type { Prompt } from '@/types';
 import { PromptCardSkeleton } from '@/components/prompt-card-skeleton';
 
 function GallerySkeleton() {
@@ -17,33 +14,14 @@ function GallerySkeleton() {
   );
 }
 
-export default function Home() {
-  const [initialPrompts, setInitialPrompts] = useState<Prompt[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadPrompts() {
-      try {
-        const prompts = await fetchPrompts();
-        setInitialPrompts(prompts);
-      } catch (error) {
-        console.error("Failed to fetch initial prompts", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadPrompts();
-  }, []);
+export default async function Home() {
+  const initialPrompts = await fetchPrompts();
 
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1 container mx-auto px-2 pt-4 pb-20">
         <Suspense fallback={<GallerySkeleton />}>
-          {isLoading ? (
-            <GallerySkeleton />
-          ) : (
-            <PromptGallery initialPrompts={initialPrompts} />
-          )}
+          <PromptGallery initialPrompts={initialPrompts} />
         </Suspense>
       </main>
     </div>
