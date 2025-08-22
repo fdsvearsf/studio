@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Heart, Loader2, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from 'lucide-react';
-import { useFavorites } from '@/hooks/use-favorites';
+import { useFavorites } from '@/hooks/use-favorites.tsx';
 import { fetchPrompts } from '@/lib/data';
 
 const INITIAL_LOAD_COUNT = 10;
@@ -29,7 +29,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
     all: INITIAL_LOAD_COUNT,
     new: INITIAL_LOAD_COUNT,
     trending: INITIAL_LOAD_COUNT,
-    dpMaker: INITIAL_LOAD_COUNT,
+    logo: INITIAL_LOAD_COUNT,
     stickerMaker: INITIAL_LOAD_COUNT,
     games: INITIAL_LOAD_COUNT,
     favorites: INITIAL_LOAD_COUNT,
@@ -43,7 +43,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
 
   const newPrompts = useMemo(() => prompts.filter(p => p.category === 'New'), [prompts]);
   const trendingPrompts = useMemo(() => prompts.filter(p => p.category === 'Trending'), [prompts]);
-  const dpMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'DP Maker'), [prompts]);
+  const logoPrompts = useMemo(() => prompts.filter(p => p.category === 'DP Maker'), [prompts]);
   const stickerMakerPrompts = useMemo(() => prompts.filter(p => p.category === 'Sticker Maker'), [prompts]);
   const gamesPrompts = useMemo(() => prompts.filter(p => p.category.toLowerCase() === 'games'), [prompts]);
   const favoritePrompts = useMemo(() => {
@@ -113,7 +113,7 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
                         <TabsTrigger value="all">All</TabsTrigger>
                         <TabsTrigger value="new">New</TabsTrigger>
                         <TabsTrigger value="trending">Trending</TabsTrigger>
-                        <TabsTrigger value="dpMaker">DP Maker</TabsTrigger>
+                        <TabsTrigger value="logo">LOGO</TabsTrigger>
                         <TabsTrigger value="stickerMaker">Sticker Maker</TabsTrigger>
                         <TabsTrigger value="games">Games</TabsTrigger>
                         <TabsTrigger value="favorites">Favorites</TabsTrigger>
@@ -131,8 +131,8 @@ export function PromptGallery({ initialPrompts }: PromptGalleryProps) {
         <TabsContent value="trending" className="mt-4">
           {renderGrid(trendingPrompts, 'trending')}
         </TabsContent>
-        <TabsContent value="dpMaker" className="mt-4">
-          {renderGrid(dpMakerPrompts, 'dpMaker', 'No DP Maker prompts found.')}
+        <TabsContent value="logo" className="mt-4">
+          {renderGrid(logoPrompts, 'logo', 'No LOGO prompts found.')}
         </TabsContent>
         <TabsContent value="stickerMaker" className="mt-4">
           {renderGrid(stickerMakerPrompts, 'stickerMaker', 'No Sticker Maker prompts found.')}
